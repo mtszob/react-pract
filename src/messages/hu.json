@@ -1,0 +1,66 @@
+{
+    "Home": {
+        "title": "Főoldal"
+    },
+    "User": {
+        "name": "Név",
+        "dateOfBirth": "Születési dátum",
+        "email": "E-mail cím",
+        "sex": "Nem",
+        "male": "férfi",
+        "female": "nő",
+        "prefix": "Előtag",
+        "lastName": "Vezetéknév",
+        "firstName": "Keresztnév",
+        "suffix": "Utótag",
+        "phone": "Telefonszám",
+        "address": "Cím",
+        "postalCode": "Irányítószám",
+        "city": "Település",
+        "line": "Utca, házszám"
+    },
+    "Patient": {
+        "title": "Páciensek",
+        "identifier": "TAJ szám",
+        "practitioner": "Orvos",
+        "practNotFound": "Orvos nem található",
+        "add": "Páciens hozzáadása",
+        "update": "Páciens módosítása",
+        "save": "Páciens mentése"
+    },
+    "Practitioner": {
+        "title": "Orvosok",
+        "role": "Szerep",
+        "user": "felhasználó",
+        "admin": "admin",
+        "add": "Orvos hozzáadása",
+        "update": "Orvos módosítása",
+        "save": "Orvos mentése"
+    },
+    "Nav": {
+        "settings": "Beállítások",
+        "language": "Nyelv",
+        "home": "Főoldal",
+        "patients": "Páciensek",
+        "practitioners": "Orvosok"
+    },
+    "Error": {
+        "errorWhenLoading": "Hiba az adatok betöltésekor",
+        "invalidPrefix": "Az előtag csak betűt és pontot tartalmazhat.",
+        "invalidLastName": "A vezetéknév csak betűt, szóközt, és kötőjelet tartalmazhat.",
+        "invalidFirstName": "A keresztnév csak betűt és szóközt tartalmazhat.",
+        "invalidSuffix": "Az utótag csak betűt tartalmazhat.",
+        "invalidDateOfBirth": "A születési dátum 1900-01-01 és a mai dátum között kell hogy legyen.",
+        "invalidEmail": "Nem megfelelő email. (példa: pelda@email.com)",
+        "invalidPhone": "A telefonszámnak +36-tal kell kezdődnie, amit 9 szám követ.",
+        "invalidPostalCode": "Az irányítószám 4 számjegyből kell hogy álljon.",
+        "invalidIdentifier": "A TAJ szám 9 számjegyből kell álljon."
+    },
+    "Misc": {
+        "loading": "Betöltés...",
+        "search": "Keresés",
+        "deleteItem": "Adat törlése",
+        "deleteConfirm": "Biztosan törli ezt az adatot? \"{item}\"",
+        "cancel": "Mégsem"
+    }
+}

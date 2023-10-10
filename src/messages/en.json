@@ -1,0 +1,66 @@
+{
+    "Home": {
+        "title": "Home"
+    },
+    "User": {
+        "name": "Name",
+        "dateOfBirth": "Date of birth",
+        "email": "E-mail address",
+        "sex": "Sex",
+        "male": "male",
+        "female": "female",
+        "prefix": "Prefix",
+        "lastName": "Last name",
+        "firstName": "First name",
+        "suffix": "Suffix",
+        "phone": "Phone number",
+        "address": "Address",
+        "postalCode": "Postal code",
+        "city": "City",
+        "line": "Line"
+    },
+    "Patient": {
+        "title": "Patients",
+        "identifier": "SSN",
+        "practitioner": "Practitioner",
+        "practNotFound": "Practitioner not found",
+        "add": "Add patient",
+        "update": "Update patient",
+        "save": "Save patient"
+    },
+    "Practitioner": {
+        "title": "Practitioners",
+        "role": "Role",
+        "user": "user",
+        "admin": "admin",
+        "add": "Add practitioner",
+        "update": "Update practitioner",
+        "save": "Save practitioner"
+    },
+    "Nav": {
+        "settings": "Settings",
+        "language": "Language",
+        "home": "Home",
+        "patients": "Patients",
+        "practitioners": "Practitioners"
+    },
+    "Error": {
+        "errorWhenLoading": "Error when loading data",
+        "invalidPrefix": "Prefix must contain alphabet and . characters only.",
+        "invalidLastName": "Last name must contain alphabet, space and - characters only.",
+        "invalidFirstName": "First name must contain alphabet and space characters only.",
+        "invalidSuffix": "Suffix must contain alphabet characters only.",
+        "invalidDateOfBirth": "Date of birth must be a date from 1900-01-01 to today's date.",
+        "invalidEmail": "Invalid email. example: (example@email.com)",
+        "invalidPhone": "Phone number must start with +36 followed by 9 numbers.",
+        "invalidPostalCode": "Postal code must consist of 4 numbers.",
+        "invalidIdentifier": "SSN must contain 9 numbers."
+    },
+    "Misc": {
+        "loading": "Loading...",
+        "search": "Search",
+        "deleteItem": "Delete item",
+        "deleteConfirm": "Are you sure you want to delete \"{item}\"?",
+        "cancel": "Cancel"
+    }
+}
