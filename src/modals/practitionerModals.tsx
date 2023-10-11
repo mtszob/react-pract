@@ -1,6 +1,6 @@
-import styles from '../page.module.css';
-import { CustomModal, Select } from '@/app/misc/serverComponents';
-import { Practitioner, practitionerSchema } from './constants';
+import { Practitioner, practitionerSchema } from '@/constants/practitionerConstants';
+import styles from './modals.module.css';
+import { CustomModal, Select } from '@/components/misc/serverComponents';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { z } from 'zod';

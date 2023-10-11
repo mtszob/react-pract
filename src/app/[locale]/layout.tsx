@@ -1,9 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { NavBar } from '../misc/clientComponents'
 import { NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
+import { NavBar } from '@/components/misc/clientComponents'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,7 +30,7 @@ export default async function RootLayout({
 
     let messages;
     try {
-        messages = (await import(`../../messages/${locale}.json`)).default;
+        messages = (await import(`@/messages/${locale}.json`)).default;
     } catch (error) {
         notFound();
     }

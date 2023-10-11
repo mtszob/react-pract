@@ -1,9 +1,9 @@
 'use client'
 import useSWR from 'swr';
-import { ItemList } from '../../pages/items/itemList';
-import { PractitionerDetailsModal, PractitionerAddModal } from './modals';
-import { Practitioner } from './constants';
 import { useTranslations } from 'next-intl';
+import { ItemList } from '@/components/items/itemList';
+import { PractitionerAddModal, PractitionerDetailsModal } from '@/modals/practitionerModals';
+import { Practitioner } from '@/constants/practitionerConstants';
 
 
 export default function Practitioners() {

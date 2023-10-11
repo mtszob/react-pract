@@ -1,9 +1,9 @@
 'use client'
 import useSWR from 'swr';
-import { ItemList } from '../../pages/items/itemList';
-import { PatientDetailsModal, PatientAddModal } from './modals';
-import { Patient } from './constants';
 import { useTranslations } from 'next-intl';
+import { ItemList } from '@/components/items/itemList';
+import { PatientAddModal, PatientDetailsModal } from '@/modals/patientModals';
+import { Patient } from '@/constants/patientConstants';
 
 
 export default function Patients() {

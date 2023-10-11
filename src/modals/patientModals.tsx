@@ -1,11 +1,11 @@
-import styles from '../page.module.css';
+import styles from './modals.module.css';
 import { useEffect, useState } from 'react';
-import { CustomModal, SSNInput, Select } from '../../misc/serverComponents';
-import { Patient, patientSchema } from './constants';
 import { useTranslations } from 'next-intl';
-import { getById, getByName } from '@/app/services/practitionerService';
+import { getById, getByName } from '@/services/practitionerService';
 import { DebounceInput } from 'react-debounce-input';
 import { z } from 'zod';
+import { Patient, patientSchema } from '@/constants/patientConstants';
+import { CustomModal, SSNInput, Select } from '@/components/misc/serverComponents';
 
 
 export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }) {
@@ -144,7 +144,6 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
                                 setPractNotFound(false);
                                 setPatient({ ...patient, practitioner: null });
                             } else {
-                                console.log('hahjaj');
                                 getByName(e.target.value).then(body => {
                                     if (body.data) {
                                         setPractNotFound(false);

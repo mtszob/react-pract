@@ -66,4 +66,3 @@ export function SSNInput({ tabIndex, ssn, setter }: { tabIndex: number, ssn: str
         />
     )
 }
-

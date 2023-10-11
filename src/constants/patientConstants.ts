@@ -1,4 +1,4 @@
-import { ssnRegex, zodAddress, zodDob, zodNameObj, zodTelecom } from '@/app/misc/utils';
+import { ssnRegex, zodAddress, zodDob, zodNameObj, zodTelecom } from '@/constants/misc';
 import { z } from 'zod';
 
 export class Patient {

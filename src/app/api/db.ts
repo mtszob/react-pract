@@ -65,7 +65,7 @@ export async function deleteData(model: mongoose.Model<any>, data: any) {
     }
 }
 
-export async function getPractitionerById(model: mongoose.Model<any>, id: string) {
+async function getPractitionerById(model: mongoose.Model<any>, id: string) {
     const collectionName = model.collection.collectionName;
 
     try {
@@ -77,7 +77,7 @@ export async function getPractitionerById(model: mongoose.Model<any>, id: string
     }
 }
 
-export async function getPractitionerByName(model: mongoose.Model<any>, name: string) {
+async function getPractitionerByName(model: mongoose.Model<any>, name: string) {
     const collectionName = model.collection.collectionName;
 
     try {

@@ -1,10 +1,10 @@
 import styles from './items.module.css';
 import { FunctionComponent, useState } from 'react';
-import { ConfirmAlert, Select } from '../../misc/serverComponents';
 import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useImmerReducer } from 'use-immer';
-import { getDeepAttribute } from '../../misc/utils';
 import { useTranslations } from 'next-intl';
+import { getDeepAttribute } from '@/services/misc';
+import { ConfirmAlert, Select } from '../misc/serverComponents';
 
 
 export function ItemList({ collection, data, mutate, colsObj, colorData, filterData, filterFunction, DetailsModal, AddModal }: {

@@ -31,16 +31,3 @@ export const zodDob = z.string().min(1).refine((dateStr: string) => {
     const date = new Date(dateStr);
     return dateStr === '' || (new Date('1900-01-01') <= date && date < new Date());
 }, { message: 'invalidDateOfBirth' });
-
-
-export function getDeepAttribute(obj: any, attributeChain: string) {
-    let currentAttribute = obj;
-    const attributes = attributeChain.split('.');
-
-    attributes.forEach(attribute => {
-        if (currentAttribute === undefined) return;
-        currentAttribute = currentAttribute[attribute];
-    });
-
-    return currentAttribute;
-}
