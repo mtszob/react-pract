@@ -7,8 +7,11 @@ import { Patient } from '@/constants/patientConstants';
 
 
 export default function Patients() {
-    const { data, error, mutate }: any = useSWR('/api/patients', (url: string) => fetch(url).then(r => r.json()));
     const t = useTranslations();
+    const { data, error, mutate }: any = useSWR('/api/patients', (url: string) => fetch(url).then(r => r.json()));
+
+    if (error) return <h3>{t('Error.errorWhenLoading')}</h3>;
+    if (!data) return <h3>{t('Misc.loading')}</h3>;
 
     const colsObj = {
         name: t('User.name'),
@@ -18,9 +21,6 @@ export default function Patients() {
     };
     const colorData = { colors: { null: 'var(--green)' }, colorByField: 'practitioner' };
     const filterData = { sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] } };
-
-    if (error) return <div>{t('Error.errorWhenLoading')}</div>;
-    if (!data) return <div>{t('Misc.loading')}</div>;
 
     return (
         <>

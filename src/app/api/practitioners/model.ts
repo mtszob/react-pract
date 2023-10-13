@@ -17,7 +17,7 @@ const practitionerSchema = new mongoose.Schema({
     name: { type: String, required: true },
     telecom: {
         type: {
-            email: { type: String, required: true, unique: true },
+            email: { type: String, required: true },
             phone: { type: String, required: true },
         },
         required: true
@@ -29,6 +29,13 @@ const practitionerSchema = new mongoose.Schema({
             line: { type: String, required: true },
         },
         required: true
+    },
+    login: {
+        type: {
+            email: { type: String, required: true, unique: true },
+            password: { type: String, required: true },
+        },
+        required: false
     },
     organization: String
 });

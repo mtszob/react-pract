@@ -22,3 +22,13 @@
   width: 125px;
   text-align: center;
 }
+
+.default-modal {
+  padding: 20px;
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+.default-modal h3 {
+  margin-top: 0px;
+}

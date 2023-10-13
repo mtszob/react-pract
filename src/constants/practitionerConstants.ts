@@ -22,6 +22,10 @@ export class Practitioner {
         postalCode: '',
         line: ''
     };
+    login = {
+        email: '',
+        password: ''
+    };
     organization: string | null = null;
 }
 

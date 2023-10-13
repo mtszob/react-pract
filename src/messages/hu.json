@@ -5,7 +5,7 @@
     "User": {
         "name": "Név",
         "dateOfBirth": "Születési dátum",
-        "email": "E-mail cím",
+        "email": "Elérhetőségi e-mail",
         "sex": "Nem",
         "male": "férfi",
         "female": "nő",
@@ -17,7 +17,9 @@
         "address": "Cím",
         "postalCode": "Irányítószám",
         "city": "Település",
-        "line": "Utca, házszám"
+        "line": "Utca, házszám",
+        "password": "Jelszó",
+        "confirmPassword": "Jelszó megerősítése"
     },
     "Patient": {
         "title": "Páciensek",
@@ -35,7 +37,8 @@
         "admin": "admin",
         "add": "Orvos hozzáadása",
         "update": "Orvos módosítása",
-        "save": "Orvos mentése"
+        "save": "Orvos mentése",
+        "data": "Orvos adatai"
     },
     "Nav": {
         "settings": "Beállítások",
@@ -43,6 +46,11 @@
         "home": "Főoldal",
         "patients": "Páciensek",
         "practitioners": "Orvosok"
+    },
+    "Login": {
+        "login": "Bejelentkezés",
+        "registration": "Regisztráció",
+        "register": "Regisztrálás"
     },
     "Error": {
         "errorWhenLoading": "Hiba az adatok betöltésekor",
@@ -52,15 +60,20 @@
         "invalidSuffix": "Az utótag csak betűt tartalmazhat.",
         "invalidDateOfBirth": "A születési dátum 1900-01-01 és a mai dátum között kell hogy legyen.",
         "invalidEmail": "Nem megfelelő email. (példa: pelda@email.com)",
+        "invalidPassword": "A jelszónak legalább 6 karakterből kell állnia.",
+        "passwordMismatch": "A két jelszó nem egyezik meg.",
         "invalidPhone": "A telefonszámnak +36-tal kell kezdődnie, amit 9 szám követ.",
         "invalidPostalCode": "Az irányítószám 4 számjegyből kell hogy álljon.",
-        "invalidIdentifier": "A TAJ szám 9 számjegyből kell álljon."
+        "invalidIdentifier": "A TAJ szám 9 számjegyből kell álljon.",
+        "userNotFound": "Felhasználó nem található.",
+        "registration": "Hiba történt a regisztráció során"
     },
     "Misc": {
         "loading": "Betöltés...",
         "search": "Keresés",
         "deleteItem": "Adat törlése",
         "deleteConfirm": "Biztosan törli ezt az adatot? \"{item}\"",
-        "cancel": "Mégsem"
+        "cancel": "Mégsem",
+        "next": "Tovább"
     }
 }

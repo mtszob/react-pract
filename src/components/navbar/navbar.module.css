@@ -1,0 +1,25 @@
+.nav-bar {
+    display: flex;
+}
+
+.nav-bar>a {
+    background-color: var(--darker);
+}
+
+.nav-button {
+    flex: 1;
+    text-align: center;
+    border: 1px solid lightgray;
+    color: lightgray;
+    text-decoration: none;
+}
+
+.nav-button:hover {
+    background-color: var(--dark);
+}
+
+.selected-nav-button {
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-weight: bold;
+}

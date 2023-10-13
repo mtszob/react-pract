@@ -1,10 +1,10 @@
 import styles from './items.module.css';
 import { FunctionComponent, useState } from 'react';
-import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlusCircle } from 'react-icons/ai';
+import { MdAddCircle, MdDelete, MdEdit } from 'react-icons/md';
 import { useImmerReducer } from 'use-immer';
 import { useTranslations } from 'next-intl';
 import { getDeepAttribute } from '@/services/misc';
-import { ConfirmAlert, Select } from '../misc/serverComponents';
+import { ConfirmAlert, Select } from '../misc';
 
 
 export function ItemList({ collection, data, mutate, colsObj, colorData, filterData, filterFunction, DetailsModal, AddModal }: {
@@ -64,7 +64,6 @@ function SearchBar({ filterData, filter, setFilter, setModalData }: { filterData
                         setter={(str: any) => setFilter({ ...filter, [key]: str })} />
                 }
             })}
-            |
             <input
                 type='text'
                 placeholder={t('search')}
@@ -72,10 +71,7 @@ function SearchBar({ filterData, filter, setFilter, setModalData }: { filterData
                 value={filter.name}
                 onChange={(e) => setFilter({ ...filter, name: e.target.value })}
             />
-            |
-            <div style={{ cursor: 'pointer' }} onClick={() => setModalData({ name: 'add', item: null })}>
-                <AiOutlinePlusCircle color='lime' size='25px' />
-            </div>
+            <MdAddCircle onClick={() => setModalData({ name: 'add', item: null })} color='lime' size='25px' />
         </div>
     )
 }
@@ -142,20 +138,16 @@ function ListItem({ item, colData, colorData, showDetails, showUpdate, showDelet
             {colData.map((col, index) => <td key={index + 1}>{getDeepAttribute(item, col)}</td>)}
             {/* edit and delete buttons */}
             <td>
-                <span style={{ cursor: 'pointer' }} onClick={(e) => {
+                <MdEdit color='lime' size='25px' onClick={(e: any) => {
                     e.stopPropagation();
                     showUpdate(item);
-                }}>
-                    <AiOutlineEdit color='lime' size='25px' />
-                </span>
+                }} />
             </td>
             <td>
-                <span style={{ cursor: 'pointer' }} onClick={(e) => {
+                <MdDelete color='red' size='25px' onClick={(e: any) => {
                     e.stopPropagation();
                     showDelete(item);
-                }}>
-                    <AiOutlineDelete color='red' size='25px' />
-                </span>
+                }} />
             </td>
         </tr>
     )

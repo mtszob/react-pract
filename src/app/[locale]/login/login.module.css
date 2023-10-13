@@ -1,0 +1,55 @@
+.login-container {
+    border: 2px solid white;
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 260px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-container input {
+    float: right;
+}
+
+.registration-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.registration-container input {
+    float: right;
+}
+
+.login-header {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.registration-button {
+    border-color: white;
+    font-weight: bold;
+    height: auto;
+    padding: 5px 20px;
+}
+
+.registration-header {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.registration-header svg {
+    padding: 0;
+}
+
+.registration-header label {
+    padding-left: 10px;
+    font-weight: bold;
+}

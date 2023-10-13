@@ -1,11 +1,12 @@
 import styles from './modals.module.css';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { getById, getByName } from '@/services/practitionerService';
+import { getById, getByName } from '@/services/userService';
 import { DebounceInput } from 'react-debounce-input';
 import { z } from 'zod';
 import { Patient, patientSchema } from '@/constants/patientConstants';
-import { CustomModal, SSNInput, Select } from '@/components/misc/serverComponents';
+import { Select } from '@/components/misc';
+import { CustomModal } from './misc';
 
 
 export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }) {
@@ -14,7 +15,7 @@ export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }
 
     useEffect(() => {
         if (data?.practitioner) {
-            getById(data.practitioner).then(body => setPractitionerName(body.data.name)).catch(err => console.error(err));
+            getById('practitioners', data.practitioner).then(body => setPractitionerName(body.data.name)).catch(err => console.error(err));
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -50,7 +51,7 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
 
     useEffect(() => {
         if (data?.practitioner) {
-            getById(data.practitioner).then(body => setPractitionerName(body.data.name)).catch(err => console.error(err));
+            getById('practitioners', data.practitioner).then(body => setPractitionerName(body.data.name)).catch(err => console.error(err));
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -144,7 +145,7 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
                                 setPractNotFound(false);
                                 setPatient({ ...patient, practitioner: null });
                             } else {
-                                getByName(e.target.value).then(body => {
+                                getByName('practitioners', e.target.value).then(body => {
                                     if (body.data) {
                                         setPractNotFound(false);
                                         setPatient({ ...patient, practitioner: body.data._id });
@@ -162,5 +163,28 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
                 <button disabled={showErrorMessage || practNotFound} tabIndex={14} type='submit'>{t('Patient.save')}</button>
             </form>
         </CustomModal>
+    )
+}
+
+function SSNInput({ tabIndex, ssn, setter }: { tabIndex: number, ssn: string, setter: any }) {
+    return (
+        <input tabIndex={tabIndex} value={ssn} maxLength={11} placeholder='xxx-xxx-xxx' onChange={(e) => {
+            const numbers = e.target.value.replaceAll(/[^0-9]/g, '');
+
+            if (numbers !== '') {
+                const validSSN = numbers.split('').reduce((accumulator, currentValue) => {
+                    if (accumulator.length === 3 || accumulator.length === 7) {
+                        return accumulator + '-' + currentValue;
+                    } else {
+                        return accumulator + currentValue;
+                    }
+                });
+
+                setter(validSSN.slice(0, 11));
+            } else {
+                setter('');
+            }
+        }}
+        />
     )
 }

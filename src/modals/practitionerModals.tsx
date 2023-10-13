@@ -1,9 +1,10 @@
 import { Practitioner, practitionerSchema } from '@/constants/practitionerConstants';
 import styles from './modals.module.css';
-import { CustomModal, Select } from '@/components/misc/serverComponents';
+import { Select } from '@/components/misc';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { z } from 'zod';
+import { CustomModal } from './misc';
 
 
 export function PractitionerDetailsModal({ data, hide }: { data: Practitioner, hide: any }) {
@@ -30,7 +31,8 @@ export function PractitionerDetailsModal({ data, hide }: { data: Practitioner, h
     )
 }
 
-export function PractitionerAddModal({ data, hide, onSave }: { data?: Practitioner | null, hide: any, onSave: any }) {
+export function PractitionerAddModal({ data, titleText, saveButtonText, hide, onSave }:
+    { data?: Practitioner | null, titleText?: string, saveButtonText?: string, hide: any, onSave: any }) {
     const t = useTranslations();
     const [practitioner, setPractitioner] = useState(data ? data : new Practitioner());
     let showErrorMessage = false;
@@ -49,7 +51,7 @@ export function PractitionerAddModal({ data, hide, onSave }: { data?: Practition
 
     return (
         <CustomModal onCancel={hide}>
-            <h3>{data ? t('Practitioner.update') : t('Practitioner.add')}</h3>
+            <h3>{titleText ? titleText : (data ? t('Practitioner.update') : t('Practitioner.add'))}</h3>
             <form className={styles['user-add-form']} onSubmit={async (e) => {
                 e.preventDefault();
                 const practCopy = { ...practitioner };
@@ -120,7 +122,9 @@ export function PractitionerAddModal({ data, hide, onSave }: { data?: Practition
                     </div>
                 </label>
                 <div className='error'>{errorMessage}</div>
-                <button disabled={showErrorMessage} tabIndex={13} type='submit'>{t('Practitioner.save')}</button>
+                <button disabled={showErrorMessage} tabIndex={13} type='submit'>
+                    {saveButtonText ? saveButtonText : t('Practitioner.save')}
+                </button>
             </form>
         </CustomModal>
     )

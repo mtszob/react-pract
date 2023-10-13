@@ -17,7 +17,7 @@ export const zodNameObj = z.object({
 });
 
 export const zodTelecom = z.object({
-    email: z.string().email({ message: 'invalidEmail' }).min(5).or(z.literal('')),
+    email: z.string().email({ message: 'invalidEmail' }).or(z.literal('')),
     phone: z.string().regex(phoneRegex, { message: 'invalidPhone' }).min(1).max(12)
 });
 
