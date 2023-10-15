@@ -7,11 +7,13 @@ import { useTranslations } from 'next-intl';
 import { SettingsButton } from '../misc';
 import { useContext } from 'react';
 import { UserContext } from '@/app/[locale]/main/layout';
+import { useSWRConfig } from 'swr';
 
 
 export function NavBar({ routes }: { routes: { name: string, href: string }[] }) {
     const t = useTranslations('Nav');
     const { replace } = useRouter();
+    const { mutate } = useSWRConfig()
     const pathname = usePathname();
     const pathnameArray = pathname.split('/');
     const top = pathnameArray[pathnameArray.length - 1];
@@ -23,6 +25,7 @@ export function NavBar({ routes }: { routes: { name: string, href: string }[] })
                 <MdLogout onClick={() => {
                     localStorage.removeItem('loggedInUser');
                     replace('/login');
+                    mutate(key => true, undefined, { revalidate: false }); // clear swr cache
                 }} size='25px' />
                 <SettingsButton />
                 {loggedInUser?.name}
