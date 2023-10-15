@@ -26,7 +26,7 @@
         "identifier": "TAJ szám",
         "practitioner": "Orvos",
         "practNotFound": "Orvos nem található",
-        "add": "Páciens hozzáadása",
+        "add": "Páciens felvétele",
         "update": "Páciens módosítása",
         "save": "Páciens mentése"
     },
@@ -35,10 +35,11 @@
         "role": "Szerep",
         "user": "felhasználó",
         "admin": "admin",
-        "add": "Orvos hozzáadása",
+        "add": "Orvos felvétele",
+        "addNew": "Új orvos felvétele",
         "update": "Orvos módosítása",
         "save": "Orvos mentése",
-        "data": "Orvos adatai"
+        "select": "Orvos választása"
     },
     "Nav": {
         "settings": "Beállítások",
@@ -66,6 +67,7 @@
         "invalidPostalCode": "Az irányítószám 4 számjegyből kell hogy álljon.",
         "invalidIdentifier": "A TAJ szám 9 számjegyből kell álljon.",
         "userNotFound": "Felhasználó nem található.",
+        "userHasLogin": "Ez a felhasználó már rendelkezik bejelentkezési adatokkal.",
         "registration": "Hiba történt a regisztráció során"
     },
     "Misc": {

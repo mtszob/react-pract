@@ -22,9 +22,9 @@ export class Practitioner {
         postalCode: '',
         line: ''
     };
-    login = {
-        email: '',
-        password: ''
+    login?: {
+        email: string,
+        password: string
     };
     organization: string | null = null;
 }

@@ -56,8 +56,7 @@ export function PractitionerAddModal({ data, titleText, saveButtonText, hide, on
                 e.preventDefault();
                 const practCopy = { ...practitioner };
                 practCopy.name = `${practitioner.nameObj.prefix} ${practitioner.nameObj.last} ${practitioner.nameObj.first} ${practitioner.nameObj.suffix}`.trim();
-                await onSave(practCopy);
-                hide();
+                onSave(practCopy);
             }}>
                 <label>{t('User.name')}*:
                     <div className={styles['input-container']}>

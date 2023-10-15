@@ -25,6 +25,17 @@ export const POST = async (request: NextRequest) => {
         case 'add': return addData(Patients, data);
         case 'delete': return deleteData(Patients, data);
         case 'update': return updateData(Patients, data);
+        case 'getByPractitioner': return getByPractitioner(data);
         default: throw Error('Unknown action: ' + action);
+    }
+}
+
+async function getByPractitioner(practId: string) {
+    try {
+        const data = await Patients.find({ practitioner: { $in: [practId, null] } });
+
+        return NextResponse.json({ data }, { status: 200 });
+    } catch (error) {
+        return new NextResponse(`getByName: Error when querying data by practitioner ("${practId}") from "patients" collection`, { status: 500 });
     }
 }

@@ -21,12 +21,12 @@ export async function addData(model: mongoose.Model<any>, data: any) {
         return NextResponse.json({
             message: `Data uploaded to "${collectionName}" collection`,
             sucess: true,
-            savedData
+            data: savedData
         }, { status: 200 });
 
     } catch (error) {
         console.log(error);
-        return new NextResponse(`Error when uploading data to "${collectionName}" collection`, { status: 500 });
+        return new NextResponse(`addData: Error when uploading data to "${collectionName}" collection`, { status: 500 });
     }
 }
 
@@ -44,7 +44,7 @@ export async function updateData(model: mongoose.Model<any>, data: any) {
 
     } catch (error) {
         console.log(error);
-        return new NextResponse(`Error when updating "${data.name}" from "${collectionName}" collection`, { status: 500 });
+        return new NextResponse(`updateData: Error when updating "${data.name}" from "${collectionName}" collection`, { status: 500 });
     }
 }
 
@@ -61,11 +61,11 @@ export async function deleteData(model: mongoose.Model<any>, data: any) {
         }, { status: 200 });
 
     } catch (error) {
-        return new NextResponse(`Error when deleting "${data.name}" from "${collectionName}" collection`, { status: 500 });
+        return new NextResponse(`deleteData: Error when deleting "${data.name}" from "${collectionName}" collection`, { status: 500 });
     }
 }
 
-async function getPractitionerById(model: mongoose.Model<any>, id: string) {
+export async function getById(model: mongoose.Model<any>, id: string) {
     const collectionName = model.collection.collectionName;
 
     try {
@@ -73,18 +73,6 @@ async function getPractitionerById(model: mongoose.Model<any>, id: string) {
 
         return NextResponse.json({ data }, { status: 200 });
     } catch (error) {
-        return new NextResponse(`Error when querying "${id}" from "${collectionName}" collection`, { status: 500 });
-    }
-}
-
-async function getPractitionerByName(model: mongoose.Model<any>, name: string) {
-    const collectionName = model.collection.collectionName;
-
-    try {
-        const data = await model.findOne({ name: name });
-
-        return NextResponse.json({ data }, { status: 200 });
-    } catch (error) {
-        return new NextResponse(`Error when querying "${name}" from "${collectionName}" collection`, { status: 500 });
+        return new NextResponse(`getById: Error when querying "${id}" from "${collectionName}" collection`, { status: 500 });
     }
 }

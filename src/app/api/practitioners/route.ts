@@ -1,6 +1,6 @@
 import Practitioners from './model'
 import { NextRequest, NextResponse } from 'next/server'
-import { addData, dbConnect, deleteData, updateData } from '../db';
+import { addData, dbConnect, deleteData, getById, updateData } from '../db';
 
 
 export const GET = async () => {
@@ -26,26 +26,15 @@ export const POST = async (request: NextRequest) => {
         case 'delete': return deleteData(Practitioners, data);
         case 'update': return updateData(Practitioners, data);
         case 'getById': return getById(Practitioners, data);
-        case 'getByName': return getByName(Practitioners, data);
-        case 'getByEmailAndPassword': return getByEmailAndPassword(Practitioners, data);
+        case 'getByName': return getByName(data);
+        case 'getByEmailAndPassword': return getByEmailAndPassword(data);
         default: throw Error('Unknown action: ' + action);
     }
 }
 
-
-async function getById(model: typeof Practitioners, id: string) {
+async function getByName(name: string) {
     try {
-        const data = await model.findById(id);
-
-        return NextResponse.json({ data }, { status: 200 });
-    } catch (error) {
-        return new NextResponse(`getById: Error when querying "${id}" from "practitioners" collection`, { status: 500 });
-    }
-}
-
-async function getByName(model: typeof Practitioners, name: string) {
-    try {
-        const data = await model.findOne({ name: name });
+        const data = await Practitioners.findOne({ name: name });
 
         return NextResponse.json({ data }, { status: 200 });
     } catch (error) {
@@ -53,9 +42,9 @@ async function getByName(model: typeof Practitioners, name: string) {
     }
 }
 
-async function getByEmailAndPassword(model: typeof Practitioners, loginData: { email: string, password: string }) {
+async function getByEmailAndPassword(loginData: { email: string, password: string }) {
     try {
-        const data = await model.findOne({ 'login.email': loginData.email, 'login.password': loginData.password });
+        const data = await Practitioners.findOne({ 'login.email': loginData.email, 'login.password': loginData.password });
 
         return NextResponse.json({ data }, { status: 200 });
     } catch (error) {

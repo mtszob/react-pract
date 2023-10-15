@@ -1,5 +1,5 @@
 import styles from './modals.module.css';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { getById, getByName } from '@/services/userService';
 import { DebounceInput } from 'react-debounce-input';
@@ -8,16 +8,19 @@ import { Patient, patientSchema } from '@/constants/patientConstants';
 import { Select } from '@/components/misc';
 import { CustomModal } from './misc';
 
-
-export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }) {
-    const t = useTranslations();
-    const [practitionerName, setPractitionerName] = useState('-');
-
+const useSetPractitionerName = (data: Patient | null, setPractitionerName: any) => {
     useEffect(() => {
         if (data?.practitioner) {
             getById('practitioners', data.practitioner).then(body => setPractitionerName(body.data.name)).catch(err => console.error(err));
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+};
+
+export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }) {
+    const t = useTranslations();
+    const [practitionerName, setPractitionerName] = useState('-');
+
+    useSetPractitionerName(data, setPractitionerName);
 
     return (
         <CustomModal onCancel={hide}>
@@ -49,9 +52,25 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
     let showErrorMessage = false;
     let errorMessage = '';
 
-    useEffect(() => {
-        if (data?.practitioner) {
-            getById('practitioners', data.practitioner).then(body => setPractitionerName(body.data.name)).catch(err => console.error(err));
+    useSetPractitionerName(data || null, setPractitionerName);
+
+    const validatePractitioner = useCallback((practName: string) => {
+        if (practName === '') {
+            setPractNotFound(false);
+            setPatient(prev => ({ ...prev, practitioner: null }));
+            setPractitionerName(practName);
+
+        } else {
+            getByName('practitioners', practName).then(body => {
+                if (body.data) {
+                    setPractNotFound(false);
+                    setPatient(prev => ({ ...prev, practitioner: body.data._id }));
+                } else {
+                    setPractNotFound(true);
+                }
+                setPractitionerName(practName);
+
+            }).catch(err => console.error(err));
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -73,8 +92,7 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
                 e.preventDefault();
                 const patCopy = { ...patient };
                 patCopy.name = `${patient.nameObj.prefix} ${patient.nameObj.last} ${patient.nameObj.first} ${patient.nameObj.suffix}`.trim();
-                await onSave(patCopy);
-                hide();
+                onSave(patCopy);
             }}>
                 <div>
                     <label>{t('User.name')}*:</label>
@@ -138,23 +156,7 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
                 </label>
                 <label>{t('Patient.practitioner')}:
                     <div className={styles['input-container']}>
-                        <DebounceInput tabIndex={13} value={practitionerName} debounceTimeout={750} onChange={(e) => {
-                            setPractitionerName(e.target.value);
-
-                            if (e.target.value === '') {
-                                setPractNotFound(false);
-                                setPatient({ ...patient, practitioner: null });
-                            } else {
-                                getByName('practitioners', e.target.value).then(body => {
-                                    if (body.data) {
-                                        setPractNotFound(false);
-                                        setPatient({ ...patient, practitioner: body.data._id });
-                                    } else {
-                                        setPractNotFound(true);
-                                    }
-                                }).catch(err => console.error(err));
-                            }
-                        }}
+                        <DebounceInput tabIndex={13} value={practitionerName} debounceTimeout={750} onChange={(e) => validatePractitioner(e.target.value)}
                         />
                     </div>
                 </label>

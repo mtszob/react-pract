@@ -13,22 +13,20 @@
     gap: 10px;
 }
 
-.login-container input {
-    float: right;
-}
-
 .registration-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
+.login-container input,
 .registration-container input {
     float: right;
 }
 
 .login-header {
     display: flex;
+    gap: 5px;
     flex-direction: row-reverse;
     align-items: center;
 }

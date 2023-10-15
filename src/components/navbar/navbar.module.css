@@ -1,5 +1,6 @@
 .nav-bar {
     display: flex;
+    align-items: flex-start;
 }
 
 .nav-bar>a {
@@ -22,4 +23,15 @@
     border: 1px solid var(--green);
     color: var(--green);
     font-weight: bold;
+}
+
+.header {
+    padding-bottom: 2px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 5px;
+    font-weight: bold;
+    border-bottom: 1px solid white;
 }

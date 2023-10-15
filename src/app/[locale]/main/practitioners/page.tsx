@@ -10,9 +10,6 @@ export default function Practitioners() {
     const t = useTranslations();
     const { data, error, mutate }: any = useSWR('/api/practitioners', (url: string) => fetch(url).then(r => r.json()));
 
-    if (error) return <h3>{t('Error.errorWhenLoading')}</h3>;
-    if (!data) return <h3>{t('Misc.loading')}</h3>;
-
     const colsObj = {
         name: t('User.name'),
         dob: t('User.dateOfBirth'),
@@ -24,6 +21,9 @@ export default function Practitioners() {
         role: { label: t('Practitioner.role'), options: [t('Practitioner.user'), t('Practitioner.admin')] },
         sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] }
     };
+
+    if (error) return <h3>{t('Error.errorWhenLoading')}</h3>;
+    if (!data) return <h3>{t('Misc.loading')}</h3>;
 
     return (
         <>

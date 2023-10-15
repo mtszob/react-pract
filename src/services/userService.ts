@@ -5,7 +5,7 @@ export function getById(collection: string, id: string) {
         body: JSON.stringify({ action: 'getById', data: id }),
     }).then(res => {
         if (res.ok) return res.json();
-        return Promise.reject(`getById: Error while getting data by id (${id}) from ${collection} collection`);
+        return Promise.reject(`getById: Error while getting data by id from ${collection} collection`);
     });
 }
 
@@ -39,5 +39,16 @@ export function add(collection: string, item: any) {
     }).then(res => {
         if (res.ok) return res.json();
         return Promise.reject(`add: Error while adding data to ${collection} collection`);
+    });
+}
+
+export function update(collection: string, item: any) {
+    return fetch(`/api/${collection}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ action: 'update', data: item }),
+    }).then(res => {
+        if (res.ok) return res.json();
+        return Promise.reject(`update: Error while update data in ${collection} collection`);
     });
 }

@@ -36,18 +36,35 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
                 setModalData={setModalData}
             />
             {modalData.name === 'add' &&
-                <AddModal hide={hideModals} onSave={(item: any) => triggerAdd(collection, item, mutate, dispatch)} />
+                <AddModal hide={hideModals} onSave={(item: any) => {
+                    triggerAdd(collection, item, mutate, dispatch).then(() => {
+                        hideModals();
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                }} />
             }
             {modalData.name === 'details' &&
                 <DetailsModal data={modalData.item!} hide={hideModals} />
             }
             {modalData.name === 'update' &&
-                <AddModal data={modalData.item} hide={hideModals} onSave={(item: any) => triggerUpdate(collection, item, mutate, dispatch)} />
+                <AddModal data={modalData.item} hide={hideModals} onSave={(item: any) => {
+                    triggerUpdate(collection, item, mutate, dispatch).then(() => {
+                        hideModals();
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                }} />
             }
             {modalData.name === 'delete' &&
-                <ConfirmAlert title={t('deleteItem')} message={t('deleteConfirm', { item: modalData!.item!.name })}
-                    onCancel={hideModals}
-                    onConfirm={() => triggerDelete(collection, modalData.item!, mutate, dispatch).then(() => { hideModals() })} />
+                <ConfirmAlert title={t('deleteItem')} message={t('deleteConfirm', { item: modalData!.item!.name })} onCancel={hideModals}
+                    onConfirm={() => {
+                        triggerDelete(collection, modalData.item!, mutate, dispatch).then(() => {
+                            hideModals();
+                        }).catch(err => {
+                            console.error(err);
+                        });
+                    }} />
             }
         </>
     )
