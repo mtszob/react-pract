@@ -50,7 +50,14 @@ export const useAuthCheck = (calledFromLogin: boolean, setData: any) => {
             }
         } else {
             if (id) {
-                getById('practitioners', id).then(res => setData(res.data)).catch(err => console.error(err));
+                getById('practitioners', id).then(res => {
+                    if (res.data) {
+                        setData(res.data);
+                    } else {
+                        localStorage.removeItem('loggedInUser');
+                        replace('/login');
+                    }
+                }).catch(err => console.error(err));
             } else {
                 replace('/login');
             }
