@@ -1,10 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
+import { ToastContainer, Zoom } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'Nextjs test',
@@ -29,9 +29,10 @@ export default async function RootLayout({
 
     return (
         <html lang='en'>
-            <body className={inter.className}>
+            <body>
                 <NextIntlClientProvider locale={locale} messages={messages}>
                     {children}
+                    <ToastContainer position="bottom-center" theme="dark" transition={Zoom} autoClose={2000} hideProgressBar={true} />
                 </NextIntlClientProvider >
             </body>
         </html>

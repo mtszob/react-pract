@@ -11,7 +11,7 @@ export function PractitionerDetailsModal({ data, hide }: { data: Practitioner, h
     const t = useTranslations();
 
     return (
-        <CustomModal onCancel={hide}>
+        <CustomModal width='650px' onCancel={hide}>
             <div className={styles['user-details']}>
                 <h3>{data.name}</h3>
                 <label><b>{t('User.prefix')}:</b> {data.nameObj.prefix || '-'}</label>
@@ -50,7 +50,7 @@ export function PractitionerAddModal({ data, titleText, saveButtonText, hide, on
     }
 
     return (
-        <CustomModal onCancel={hide}>
+        <CustomModal width='650px' onCancel={hide}>
             <h3>{titleText ? titleText : (data ? t('Practitioner.update') : t('Practitioner.add'))}</h3>
             <form className={styles['user-add-form']} onSubmit={async (e) => {
                 e.preventDefault();

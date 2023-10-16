@@ -10,7 +10,6 @@ export const GET = async () => {
         const practitioners: any = await Practitioners.find();
         return NextResponse.json(practitioners, { status: 200 });
     } catch (error) {
-        console.log(error);
         return new NextResponse('Error when fetching data from \"practitioners\" collection', { status: 500 });
     }
 }

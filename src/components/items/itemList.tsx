@@ -5,6 +5,7 @@ import { useImmerReducer } from 'use-immer';
 import { useTranslations } from 'next-intl';
 import { getDeepAttribute } from '@/services/misc';
 import { ConfirmAlert, Select } from '../misc';
+import { toast } from 'react-toastify';
 
 
 export function ItemList({ collection, data, mutate, colsObj, colorData, filterData, filterFunction, DetailsModal, AddModal }: {
@@ -13,7 +14,7 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
     filterData: any, filterFunction: (data: any[], filter: any, t: any) => any[],
     DetailsModal: FunctionComponent<{ data: any, hide: any }>, AddModal: FunctionComponent<{ data?: any, hide: any, onSave: any }>
 }) {
-    const t = useTranslations('Misc');
+    const t = useTranslations();
     const sortObj = { col: 'name', direction: 'asc' };
     const modalObj: { name: string, item: any } = { name: '', item: null };
     const filterObj: any = {};
@@ -39,8 +40,10 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
                 <AddModal hide={hideModals} onSave={(item: any) => {
                     triggerAdd(collection, item, mutate, dispatch).then(() => {
                         hideModals();
+                        toast(t(`Toast.${collection}AddSuccess`), { type: 'success' });
                     }).catch(err => {
                         console.error(err);
+                        toast(t(`Toast.${collection}AddError`), { type: 'error' });
                     });
                 }} />
             }
@@ -51,18 +54,22 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
                 <AddModal data={modalData.item} hide={hideModals} onSave={(item: any) => {
                     triggerUpdate(collection, item, mutate, dispatch).then(() => {
                         hideModals();
+                        toast(t(`Toast.${collection}UpdateSuccess`), { type: 'success' });
                     }).catch(err => {
                         console.error(err);
+                        toast(t(`Toast.${collection}UpdateError`), { type: 'error' });
                     });
                 }} />
             }
             {modalData.name === 'delete' &&
-                <ConfirmAlert title={t('deleteItem')} message={t('deleteConfirm', { item: modalData!.item!.name })} onCancel={hideModals}
+                <ConfirmAlert title={t('Misc.deleteItem')} message={t('Misc.deleteConfirm', { item: modalData!.item!.name })} onCancel={hideModals}
                     onConfirm={() => {
                         triggerDelete(collection, modalData.item!, mutate, dispatch).then(() => {
                             hideModals();
+                            toast(t(`Toast.${collection}DeleteSuccess`), { type: 'success' });
                         }).catch(err => {
                             console.error(err);
+                            toast(t(`Toast.${collection}DeleteError`), { type: 'error' });
                         });
                     }} />
             }
@@ -195,7 +202,7 @@ async function triggerAdd(collection: string, item: any, mutate: any, dispatch: 
             dispatch({ code: 'set', items });
         });
     } else {
-        alert('Error when adding item: ' + res.statusText);
+        throw new Error('Error when adding item: ' + res.statusText);
     }
 }
 
@@ -211,7 +218,7 @@ async function triggerDelete(collection: string, item: any, mutate: any, dispatc
             dispatch({ code: 'delete', id: item._id });
         });
     } else {
-        alert('Error when deleting item: ' + res.statusText);
+        throw new Error('Error when deleting item: ' + res.statusText);
     }
 }
 
@@ -227,7 +234,7 @@ async function triggerUpdate(collection: string, item: any, mutate: any, dispatc
             dispatch({ code: 'set', items });
         });
     } else {
-        alert('Error when updating item: ' + res.statusText);
+        throw new Error('Error when updating item: ' + res.statusText);
     }
 }
 

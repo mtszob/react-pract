@@ -19,7 +19,11 @@
         "city": "City",
         "line": "Line",
         "password": "Password",
-        "confirmPassword": "Confirm password"
+        "confirmPassword": "Confirm password",
+        "loginData": "Login data",
+        "newEmail": "New e-mail",
+        "changePassword": "Change password",
+        "newPassword": "New password"
     },
     "Patient": {
         "title": "Patients",
@@ -67,8 +71,27 @@
         "invalidPostalCode": "Postal code must consist of 4 numbers.",
         "invalidIdentifier": "SSN must contain 9 numbers.",
         "userNotFound": "User not found.",
-        "userHasLogin": "This user already has login data.",
-        "registration": "Error during registration"
+        "userHasLogin": "This user already has login data."
+    },
+    "Toast": {
+        "emailUpdateSuccess": "E-mail updated successfully.",
+        "emailUpdateError": "Error when updating e-mail!",
+        "passwordUpdateSuccess": "Password updated successfully.",
+        "passwordUpdateError": "Error when updating password!",
+        "patientsAddSuccess": "Patient added succesfully.",
+        "patientsUpdateSuccess": "Patient updated succesfully.",
+        "patientsDeleteSuccess": "Patient deleted succesfully.",
+        "patientsAddError": "Error when adding patient!",
+        "patientsUpdateError": "Error when updating patient!",
+        "patientsDeleteError": "Error when deleting patient!",
+        "practitionersAddSuccess": "Practitioner added succesfully.",
+        "practitionersUpdateSuccess": "Practitioner updated succesfully.",
+        "practitionersDeleteSuccess": "Practitioner deleted succesfully.",
+        "practitionersAddError": "Error when adding practitioner!",
+        "practitionersUpdateError": "Error when updating practitioner!",
+        "practitionersDeleteError": "Error when deleting practitioner!",
+        "registrationSuccess": "Registration successful.",
+        "registrationError": "Error during registration!"
     },
     "Misc": {
         "loading": "Loading...",
@@ -76,6 +99,7 @@
         "deleteItem": "Delete item",
         "deleteConfirm": "Are you sure you want to delete \"{item}\"?",
         "cancel": "Cancel",
-        "next": "Next"
+        "next": "Next",
+        "save": "Save"
     }
 }

@@ -10,7 +10,6 @@ export const GET = async () => {
         const patients: any = await Patients.find();
         return NextResponse.json(patients, { status: 200 });
     } catch (error) {
-        console.log(error);
         return new NextResponse('Error when fetching data from \"patients\" collection', { status: 500 });
     }
 }

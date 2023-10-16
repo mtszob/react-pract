@@ -19,7 +19,11 @@
         "city": "Település",
         "line": "Utca, házszám",
         "password": "Jelszó",
-        "confirmPassword": "Jelszó megerősítése"
+        "confirmPassword": "Jelszó megerősítése",
+        "loginData": "Bejelentkezési adatok",
+        "newEmail": "Új e-mail",
+        "changePassword": "Jelszó megváltoztatása",
+        "newPassword": "Új jelszó"
     },
     "Patient": {
         "title": "Páciensek",
@@ -67,8 +71,27 @@
         "invalidPostalCode": "Az irányítószám 4 számjegyből kell hogy álljon.",
         "invalidIdentifier": "A TAJ szám 9 számjegyből kell álljon.",
         "userNotFound": "Felhasználó nem található.",
-        "userHasLogin": "Ez a felhasználó már rendelkezik bejelentkezési adatokkal.",
-        "registration": "Hiba történt a regisztráció során"
+        "userHasLogin": "Ez a felhasználó már rendelkezik bejelentkezési adatokkal."
+    },
+    "Toast": {
+        "emailUpdateSuccess": "Sikeres e-mail változtatás.",
+        "emailUpdateError": "Hiba történt e-mail változtatás közben!",
+        "passwordUpdateSuccess": "Sikeres jelszó változtatás.",
+        "passwordUpdateError": "Hiba történt jelszó változtatás közben!",
+        "patientsAddSuccess": "Sikeres páciens felvétel.",
+        "patientsUpdateSuccess": "Sikeres páciens módosítás.",
+        "patientsDeleteSuccess": "Sikeres páciens törlés.",
+        "patientsAddError": "Hiba történt a páciens felvétele közben!",
+        "patientsUpdateError": "Hiba történt a páciens módosításakor!",
+        "patientsDeleteError": "Hiba történt a páciens törlése közben!",
+        "practitionersAddSuccess": "Sikeres orvos felvétel.",
+        "practitionersUpdateSuccess": "Sikeres orvos módosítás.",
+        "practitionersDeleteSuccess": "Sikeres orvos törlés.",
+        "practitionersAddError": "Hiba történt az orvos felvétele közben!",
+        "practitionersUpdateError": "Hiba történt az orvos módosításakor!",
+        "practitionersDeleteError": "Hiba történt az orvos törlése közben!",
+        "registrationSuccess": "Sikeres regisztráció.",
+        "registrationError": "Hiba történt a regisztráció során!"
     },
     "Misc": {
         "loading": "Betöltés...",
@@ -76,6 +99,7 @@
         "deleteItem": "Adat törlése",
         "deleteConfirm": "Biztosan törli ezt az adatot? \"{item}\"",
         "cancel": "Mégsem",
-        "next": "Tovább"
+        "next": "Tovább",
+        "save": "Mentés"
     }
 }

@@ -11,6 +11,7 @@ import { Practitioner } from '@/constants/practitionerConstants';
 import { CustomModal } from '@/modals/misc';
 import { MdArrowBack } from 'react-icons/md';
 import { useAuthCheck } from '@/constants/misc';
+import { toast } from 'react-toastify';
 
 
 type ModalType = 'practSelect' | 'practAdd' | 'registration' | null;
@@ -137,11 +138,12 @@ function RegistrationModal({ practitioner, hide, dbAction }:
     const register = useCallback((email: string, password: string) => {
         dbAction('practitioners', { ...practitioner, login: { email, password } })
             .then(res => {
+                toast(t('Toast.registrationSuccess'), { type: 'success' });
                 localStorage.setItem('loggedInUser', res.data._id);
                 replace('main');
             })
             .catch(err => {
-                alert(`${t('Error.registration')}: "${err}"`);
+                toast(t('Toast.registrationError'), { type: 'error' });
             });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

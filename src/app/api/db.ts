@@ -25,7 +25,6 @@ export async function addData(model: mongoose.Model<any>, data: any) {
         }, { status: 200 });
 
     } catch (error) {
-        console.log(error);
         return new NextResponse(`addData: Error when uploading data to "${collectionName}" collection`, { status: 500 });
     }
 }
@@ -43,7 +42,6 @@ export async function updateData(model: mongoose.Model<any>, data: any) {
         }, { status: 200 });
 
     } catch (error) {
-        console.log(error);
         return new NextResponse(`updateData: Error when updating "${data.name}" from "${collectionName}" collection`, { status: 500 });
     }
 }

@@ -23,7 +23,7 @@ export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }
     useSetPractitionerName(data, setPractitionerName);
 
     return (
-        <CustomModal onCancel={hide}>
+        <CustomModal width='650px' onCancel={hide}>
             <div className={styles['user-details']}>
                 <h3>{data.name}</h3>
                 <label><b>{t('User.prefix')}:</b> {data.nameObj.prefix || '-'}</label>
@@ -86,7 +86,7 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
     }
 
     return (
-        <CustomModal onCancel={hide}>
+        <CustomModal width='650px' onCancel={hide}>
             <h3>{data ? t('Patient.update') : t('Patient.add')}</h3>
             <form className={styles['user-add-form']} onSubmit={async (e) => {
                 e.preventDefault();
