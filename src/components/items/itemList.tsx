@@ -24,7 +24,7 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
 
     const [sort, setSort] = useState(sortObj);
     const [modalData, setModalData] = useState(modalObj);
-    const [filter, setFilter] = useState({ name: '', ...filterObj });
+    const [filter, setFilter] = useState({ search: '', ...filterObj });
     const hideModals = () => setModalData(modalObj);
 
     return (
@@ -83,7 +83,7 @@ function SearchBar({ filterData, filter, setFilter, setModalData }: { filterData
     return (
         <div className={styles['searchbar']}>
             {Object.keys(filter).map((key, index) => {
-                if (key !== 'name') {
+                if (key !== 'search') {
                     return <Select key={index} label={filterData[key].label} selected={filter[key]} options={['-', ...filterData[key].options]}
                         setter={(str: any) => setFilter({ ...filter, [key]: str })} />
                 }
@@ -92,8 +92,8 @@ function SearchBar({ filterData, filter, setFilter, setModalData }: { filterData
                 type='text'
                 placeholder={t('search')}
                 style={{ flex: 1 }}
-                value={filter.name}
-                onChange={(e) => setFilter({ ...filter, name: e.target.value })}
+                value={filter.search}
+                onChange={(e) => setFilter({ ...filter, search: e.target.value })}
             />
             <MdAddCircle onClick={() => setModalData({ name: 'add', item: null })} color='lime' size='25px' />
         </div>
@@ -124,7 +124,7 @@ function Table({ colsObj, items, colorData, filter, filterFunction, sort, setSor
                         </tr>
                         <tr><td colSpan={keys.length + 2}><hr /></td></tr>
                         {filtered.map((item: any) => {
-                            return <ListItem key={item.name} item={item} colData={keys} colorData={colorData}
+                            return <ListItem key={item._id} item={item} colData={keys} colorData={colorData}
                                 showDetails={(item: any) => setModalData({ name: 'details', item: item })}
                                 showUpdate={(item: any) => setModalData({ name: 'update', item: item })}
                                 showDelete={(item: any) => setModalData({ name: 'delete', item: item })}

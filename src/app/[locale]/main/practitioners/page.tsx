@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { ItemList } from '@/components/items/itemList';
 import { PractitionerAddModal, PractitionerDetailsModal } from '@/modals/practitionerModals';
 import { Practitioner } from '@/constants/practitionerConstants';
+import { getDeepAttribute } from '@/services/misc';
 
 
 export default function Practitioners() {
@@ -39,7 +40,21 @@ export default function Practitioners() {
 }
 
 const filterFunction = (items: Practitioner[], filter: any, t: any): Practitioner[] => {
-    let filtered = [...items].filter(el => el.name.toLowerCase().includes(filter.name.toLowerCase()));
+    const searchColumns = ['name', 'dob', 'telecom.phone', 'telecom.email'];
+    let filtered = [...items];
+
+    if (filter.search) {
+        filtered = filtered.filter(el => {
+            // megnézzük hogy legalább az egyik searchColumn-ra matchel-e
+            return searchColumns.reduce((accumulator, currentValue) => {
+                if (accumulator) {
+                    return true;
+                } else {
+                    return accumulator || getDeepAttribute(el, currentValue).toLowerCase().includes(filter.search.toLowerCase());
+                }
+            }, false);
+        });
+    }
 
     if (filter.role !== '-') { filtered = filtered.filter(el => el.admin === (filter.role === t('Practitioner.admin'))); }
     if (filter.sex !== '-') { filtered = filtered.filter(el => el.isMale === (filter.sex === t('User.male'))); }

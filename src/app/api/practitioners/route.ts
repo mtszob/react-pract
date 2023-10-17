@@ -1,6 +1,7 @@
 import Practitioners from './model'
 import { NextRequest, NextResponse } from 'next/server'
 import { addData, dbConnect, deleteData, getById, updateData } from '../db';
+import { checkPassword } from '@/services/passwordService';
 
 
 export const GET = async () => {
@@ -43,7 +44,15 @@ async function getByName(name: string) {
 
 async function getByEmailAndPassword(loginData: { email: string, password: string }) {
     try {
-        const data = await Practitioners.findOne({ 'login.email': loginData.email, 'login.password': loginData.password });
+        const data = await Practitioners.findOne({ 'login.email': loginData.email });
+
+        if (data) {
+            if (!checkPassword(loginData.password, data.login.password)) {
+                return NextResponse.json({ error: 'invalid_password' }, { status: 200 });
+            }
+        } else {
+            return NextResponse.json({ error: 'invalid_email' }, { status: 200 });
+        }
 
         return NextResponse.json({ data }, { status: 200 });
     } catch (error) {

@@ -24,11 +24,12 @@ export default function Login() {
 
     const login = useCallback((email: string, password: string) => {
         getByEmailAndPassword('practitioners', email, password).then(body => {
-            if (body?.data) {
+            if (body.data) {
                 localStorage.setItem('loggedInUser', body.data._id);
                 replace('main');
             } else {
-                alert(t('Error.userNotFound'));
+                console.log(body.error);
+                toast(t('Error.loginError'), { type: 'error' });
             }
         }).catch(err => console.error(err));
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -94,7 +95,7 @@ function PractitionerSelectModal({ practitioner, modalSetter }: { practitioner: 
 
     const select = useCallback((id: string) => {
         getById('practitioners', id).then(body => {
-            if (body?.data) {
+            if (body.data) {
                 if (body.data.login) {
                     setErrorMessage(t('Error.userHasLogin'));
                 } else {

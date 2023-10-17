@@ -71,7 +71,8 @@
         "invalidPostalCode": "Az irányítószám 4 számjegyből kell hogy álljon.",
         "invalidIdentifier": "A TAJ szám 9 számjegyből kell álljon.",
         "userNotFound": "Felhasználó nem található.",
-        "userHasLogin": "Ez a felhasználó már rendelkezik bejelentkezési adatokkal."
+        "userHasLogin": "Ez a felhasználó már rendelkezik bejelentkezési adatokkal.",
+        "loginError": "Hibás e-mail vagy jelszó."
     },
     "Toast": {
         "emailUpdateSuccess": "Sikeres e-mail változtatás.",

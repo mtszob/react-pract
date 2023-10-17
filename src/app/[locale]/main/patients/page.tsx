@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { getByPractitioner } from '@/services/patientService';
 import { UserContext } from '../layout';
 import { Practitioner } from '@/constants/practitionerConstants';
+import { getDeepAttribute } from '@/services/misc';
 
 const fetcher = (url: string, pract: Practitioner) => {
     if (pract.admin) {
@@ -26,6 +27,7 @@ export default function Patients() {
         name: t('User.name'),
         identifier: t('Patient.identifier'),
         dob: t('User.dateOfBirth'),
+        'telecom.phone': t('User.phone'),
         'telecom.email': t('User.email')
     };
     const colorData = { colors: { null: 'var(--green)' }, colorByField: 'practitioner' };
@@ -48,7 +50,21 @@ export default function Patients() {
 }
 
 const filterFunction = (items: Patient[], filter: any, t: any): Patient[] => {
-    let filtered = [...items].filter(el => el.name.toLowerCase().includes(filter.name.toLowerCase()));
+    const searchColumns = ['name', 'identifier', 'dob', 'telecom.phone', 'telecom.email'];
+    let filtered = [...items];
+
+    if (filter.search) {
+        filtered = filtered.filter(el => {
+            // megnézzük hogy legalább az egyik searchColumn-ra matchel-e
+            return searchColumns.reduce((accumulator, currentValue) => {
+                if (accumulator) {
+                    return true;
+                } else {
+                    return accumulator || getDeepAttribute(el, currentValue).toLowerCase().includes(filter.search.toLowerCase());
+                }
+            }, false);
+        });
+    }
 
     if (filter.sex !== '-') { filtered = filtered.filter(el => el.isMale === (filter.sex === t('User.male'))); }
 

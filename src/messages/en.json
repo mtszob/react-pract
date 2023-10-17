@@ -71,7 +71,8 @@
         "invalidPostalCode": "Postal code must consist of 4 numbers.",
         "invalidIdentifier": "SSN must contain 9 numbers.",
         "userNotFound": "User not found.",
-        "userHasLogin": "This user already has login data."
+        "userHasLogin": "This user already has login data.",
+        "loginError": "Incorrect e-mail or password."
     },
     "Toast": {
         "emailUpdateSuccess": "E-mail updated successfully.",
