@@ -5,11 +5,10 @@ import { useTranslations } from "next-intl";
 import { z } from 'zod';
 import { add, getByEmailAndPassword, getById, update } from '@/services/userService';
 import { useRouter } from 'next/navigation';
-import { SettingsButton } from '@/components/misc';
-import { PractitionerAddModal } from '@/modals/practitionerModals';
+import { DefaultHeader, SettingsButton } from '@/components/misc';
+import { PractitionerFormModal } from '@/modals/practitionerModals';
 import { Practitioner } from '@/constants/practitionerConstants';
 import { CustomModal } from '@/modals/misc';
-import { MdArrowBack } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { setCookie } from 'typescript-cookie';
 
@@ -70,7 +69,7 @@ function Header() {
             {showModal === 'practSelect' && <PractitionerSelectModal practitioner={practitioner} modalSetter={modalSetter} />}
 
             {showModal === 'practAdd' &&
-                <PractitionerAddModal data={practitioner.current} titleText={t('Practitioner.add')} saveButtonText={t('Misc.next')}
+                <PractitionerFormModal data={practitioner.current} title={t('Practitioner.addNew')} submitText={t('Misc.next')}
                     hide={() => modalSetter('practSelect')} onSave={(item: Practitioner) => {
                         practitioner.current = item;
                         modalSetter('registration');
@@ -108,7 +107,7 @@ function PractitionerSelectModal({ practitioner, modalSetter }: { practitioner: 
 
     return (
         <CustomModal width='260px' onCancel={() => modalSetter(null)} >
-            <h3>{t('Practitioner.select')}</h3>
+            <DefaultHeader label={t('Practitioner.select')} backButtonClick={() => modalSetter(null)} />
             <form className={styles['registration-container']} onSubmit={(e) => {
                 e.preventDefault();
                 select(id);
@@ -118,7 +117,7 @@ function PractitionerSelectModal({ practitioner, modalSetter }: { practitioner: 
                 </label>
                 <label className='error'>{errorMessage}</label>
                 <button type='submit' disabled={id.length === 0}>{t('Misc.next')}</button>
-                <h5 style={{ margin: '10px' }}>vagy</h5>
+                <h5 style={{ margin: '10px' }}>{t('Misc.or')}</h5>
                 <button type='button' style={{ borderColor: 'var(--green)' }} onClick={() => modalSetter('practAdd')}>
                     {t('Practitioner.addNew')}
                 </button>
@@ -146,11 +145,7 @@ function RegistrationModal({ practitioner, hide, dbAction }:
 
     return (
         <CustomModal width='350px' onCancel={hide} >
-            <div className={styles['registration-header']}>
-                <MdArrowBack size='25px' onClick={hide} />
-                <label>{practitioner.name}</label>
-            </div>
-
+            <DefaultHeader label={practitioner.name} backButtonClick={hide} />
             <Form mode='registration' submit={(email: string, password: string) => register(email, password)} />
         </CustomModal>
     )

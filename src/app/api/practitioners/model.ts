@@ -1,4 +1,3 @@
-import { cryptPassword } from '@/services/passwordService';
 import mongoose from 'mongoose';
 
 
@@ -39,34 +38,6 @@ const practitionerSchema = new mongoose.Schema({
         required: false
     },
     organization: String
-});
-
-practitionerSchema.pre('save', function (next) {
-    if (!this.login) {
-        return next();
-    }
-
-    try {
-        this.login.password = cryptPassword(this.login.password);
-        return next();
-    } catch (e: any) {
-        return next(e);
-    }
-});
-
-practitionerSchema.pre('updateOne', function (next) {
-    const data = this.getUpdate() as any;
-
-    if (!data.login) {
-        return next();
-    }
-
-    try {
-        data.login.password = cryptPassword(data.login.password);
-        return next();
-    } catch (e: any) {
-        return next(e);
-    }
 });
 
 export default mongoose.models.Practitioners || mongoose.model('Practitioners', practitionerSchema);

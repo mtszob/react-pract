@@ -3,12 +3,12 @@
   gap: 10px;
 }
 
-.user-add-form {
+.grid {
   display: grid;
   gap: 10px;
 }
 
-.user-add-form select {
+.grid select {
   float: right;
 }
 
@@ -18,7 +18,8 @@
   float: right;
 }
 
-.input-container>input {
+.input-container>input,
+.input-container>button {
   width: 125px;
   text-align: center;
 }

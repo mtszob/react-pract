@@ -2,7 +2,7 @@
 import useSWR from 'swr';
 import { useTranslations } from 'next-intl';
 import { ItemList } from '@/components/items/itemList';
-import { PractitionerAddModal, PractitionerDetailsModal } from '@/modals/practitionerModals';
+import { PractitionerFormModal, PractitionerDetailsModal } from '@/modals/practitionerModals';
 import { Practitioner } from '@/constants/practitionerConstants';
 import { getDeepAttribute } from '@/services/misc';
 import { getAll } from '@/services/practitionerService';
@@ -34,7 +34,7 @@ export default function Practitioners() {
                 collection='practitioners' data={data} mutate={mutate}
                 colsObj={colsObj} colorData={colorData}
                 filterData={filterData} filterFunction={filterFunction}
-                DetailsModal={PractitionerDetailsModal} AddModal={PractitionerAddModal}
+                DetailsModal={PractitionerDetailsModal} FormModal={PractitionerFormModal}
             />
         </>
     )

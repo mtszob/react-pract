@@ -8,11 +8,11 @@ import { ConfirmAlert, Select } from '../misc';
 import { toast } from 'react-toastify';
 
 
-export function ItemList({ collection, data, mutate, colsObj, colorData, filterData, filterFunction, DetailsModal, AddModal }: {
+export function ItemList({ collection, data, mutate, colsObj, colorData, filterData, filterFunction, DetailsModal, FormModal }: {
     collection: string, data: any[], mutate: any,
     colsObj: any, colorData: { colors: any, colorByField: any },
     filterData: any, filterFunction: (data: any[], filter: any, t: any) => any[],
-    DetailsModal: FunctionComponent<{ data: any, hide: any }>, AddModal: FunctionComponent<{ data?: any, hide: any, onSave: any }>
+    DetailsModal: FunctionComponent<{ data: any, hide: any }>, FormModal: FunctionComponent<{ data?: any, hide: any, onSave: any }>
 }) {
     const t = useTranslations();
     const sortObj = { col: 'name', direction: 'asc' };
@@ -37,7 +37,7 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
                 setModalData={setModalData}
             />
             {modalData.name === 'add' &&
-                <AddModal hide={hideModals} onSave={(item: any) => {
+                <FormModal hide={hideModals} onSave={(item: any) => {
                     triggerAdd(collection, item, mutate, dispatch).then(() => {
                         hideModals();
                         toast(t(`Toast.${collection}AddSuccess`), { type: 'success' });
@@ -51,7 +51,7 @@ export function ItemList({ collection, data, mutate, colsObj, colorData, filterD
                 <DetailsModal data={modalData.item!} hide={hideModals} />
             }
             {modalData.name === 'update' &&
-                <AddModal data={modalData.item} hide={hideModals} onSave={(item: any) => {
+                <FormModal data={modalData.item} hide={hideModals} onSave={(item: any) => {
                     triggerUpdate(collection, item, mutate, dispatch).then(() => {
                         hideModals();
                         toast(t(`Toast.${collection}UpdateSuccess`), { type: 'success' });

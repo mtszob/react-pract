@@ -23,7 +23,9 @@
         "loginData": "Bejelentkezési adatok",
         "newEmail": "Új e-mail",
         "changePassword": "Jelszó megváltoztatása",
-        "newPassword": "Új jelszó"
+        "newPassword": "Új jelszó",
+        "updateProfile": "Profil frissítése",
+        "details": "Felhasználó részletei"
     },
     "Patient": {
         "title": "Páciensek",
@@ -92,7 +94,9 @@
         "practitionersUpdateError": "Hiba történt az orvos módosításakor!",
         "practitionersDeleteError": "Hiba történt az orvos törlése közben!",
         "registrationSuccess": "Sikeres regisztráció.",
-        "registrationError": "Hiba történt a regisztráció során!"
+        "registrationError": "Hiba történt a regisztráció során!",
+        "updateSuccess": "Sikeres felhasználó módosítás.",
+        "updateError": "Hiba történt a felhasználó módosítása közben."
     },
     "Misc": {
         "loading": "Betöltés...",
@@ -101,6 +105,10 @@
         "deleteConfirm": "Biztosan törli ezt az adatot? \"{item}\"",
         "cancel": "Mégsem",
         "next": "Tovább",
-        "save": "Mentés"
+        "save": "Mentés",
+        "saveEmail": "E-mail mentése",
+        "savePassword": "Jelszó mentése",
+        "saveDetails": "Részletek mentése",
+        "or": "vagy"
     }
 }

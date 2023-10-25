@@ -2,7 +2,7 @@
 import useSWR from 'swr';
 import { useTranslations } from 'next-intl';
 import { ItemList } from '@/components/items/itemList';
-import { PatientAddModal, PatientDetailsModal } from '@/modals/patientModals';
+import { PatientFormModal, PatientDetailsModal } from '@/modals/patientModals';
 import { Patient } from '@/constants/patientConstants';
 import { useContext } from 'react';
 import { getAll, getByPractitioner } from '@/services/patientService';
@@ -43,7 +43,7 @@ export default function Patients() {
                 collection='patients' data={data} mutate={mutate}
                 colsObj={colsObj} colorData={colorData}
                 filterData={filterData} filterFunction={filterFunction}
-                DetailsModal={PatientDetailsModal} AddModal={PatientAddModal}
+                DetailsModal={PatientDetailsModal} FormModal={PatientFormModal}
             />
         </>
     )

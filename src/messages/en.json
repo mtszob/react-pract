@@ -23,7 +23,9 @@
         "loginData": "Login data",
         "newEmail": "New e-mail",
         "changePassword": "Change password",
-        "newPassword": "New password"
+        "newPassword": "New password",
+        "updateProfile": "Update profile",
+        "details": "User details"
     },
     "Patient": {
         "title": "Patients",
@@ -92,7 +94,9 @@
         "practitionersUpdateError": "Error when updating practitioner!",
         "practitionersDeleteError": "Error when deleting practitioner!",
         "registrationSuccess": "Registration successful.",
-        "registrationError": "Error during registration!"
+        "registrationError": "Error during registration!",
+        "updateSuccess": "User updated successfully.",
+        "updateError": "Error when updating user."
     },
     "Misc": {
         "loading": "Loading...",
@@ -101,6 +105,10 @@
         "deleteConfirm": "Are you sure you want to delete \"{item}\"?",
         "cancel": "Cancel",
         "next": "Next",
-        "save": "Save"
+        "save": "Save",
+        "saveEmail": "Save e-mail",
+        "savePassword": "Save password",
+        "saveDetails": "Save details",
+        "or": "or"
     }
 }

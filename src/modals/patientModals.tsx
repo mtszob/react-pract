@@ -5,8 +5,9 @@ import { getById, getByName } from '@/services/userService';
 import { DebounceInput } from 'react-debounce-input';
 import { z } from 'zod';
 import { Patient, patientSchema } from '@/constants/patientConstants';
-import { Select } from '@/components/misc';
+import { DefaultHeader, Select } from '@/components/misc';
 import { CustomModal } from './misc';
+
 
 const useSetPractitionerName = (data: Patient | null, setPractitionerName: any) => {
     useEffect(() => {
@@ -25,7 +26,7 @@ export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }
     return (
         <CustomModal width='650px' onCancel={hide}>
             <div className={styles['user-details']}>
-                <h3>{data.name}</h3>
+                <DefaultHeader label={data.name} backButtonClick={hide} />
                 <label><b>{t('User.prefix')}:</b> {data.nameObj.prefix || '-'}</label>
                 <label><b>{t('User.lastName')}:</b> {data.nameObj.last}</label>
                 <label><b>{t('User.firstName')}:</b> {data.nameObj.first}</label>
@@ -44,7 +45,7 @@ export function PatientDetailsModal({ data, hide }: { data: Patient, hide: any }
     )
 }
 
-export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: any, onSave: any }) {
+export function PatientFormModal({ data, hide, onSave }: { data?: Patient, hide: any, onSave: any }) {
     const t = useTranslations();
     const [patient, setPatient] = useState(data ? data : new Patient());
     const [practitionerName, setPractitionerName] = useState('');
@@ -87,8 +88,8 @@ export function PatientAddModal({ data, hide, onSave }: { data?: Patient, hide: 
 
     return (
         <CustomModal width='650px' onCancel={hide}>
-            <h3>{data ? t('Patient.update') : t('Patient.add')}</h3>
-            <form className={styles['user-add-form']} onSubmit={async (e) => {
+            <DefaultHeader label={data ? t('Patient.update') : t('Patient.add')} backButtonClick={hide} />
+            <form className={styles['grid']} onSubmit={async (e) => {
                 e.preventDefault();
                 const patCopy = { ...patient };
                 patCopy.name = `${patient.nameObj.prefix} ${patient.nameObj.last} ${patient.nameObj.first} ${patient.nameObj.suffix}`.trim();

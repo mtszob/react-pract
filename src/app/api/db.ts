@@ -1,3 +1,4 @@
+import { cryptPassword } from '@/services/passwordService';
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 
@@ -15,6 +16,9 @@ export async function addData(model: mongoose.Model<any>, data: any) {
     const collectionName = model.collection.collectionName;
 
     try {
+        if (data.login) {
+            data.login.password = cryptPassword(data.login.password);
+        }
         const newData = new model(data);
         const savedData = await newData.save();
 
@@ -33,6 +37,12 @@ export async function updateData(model: mongoose.Model<any>, data: any) {
     const collectionName = model.collection.collectionName;
 
     try {
+        if (data.login) {
+            const old = await model.findById(data._id);
+            if (old.login?.password !== data.login.password) {
+                data.login.password = cryptPassword(data.login.password);
+            }
+        }
         await model.updateOne({ _id: data._id }, data);
 
         return NextResponse.json({

@@ -3,8 +3,17 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next-intl/client';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { MdSettings } from 'react-icons/md';
+import { MdArrowBack, MdSettings } from 'react-icons/md';
 
+
+export function DefaultHeader({ label, backButtonClick }: { label: string, backButtonClick: any }) {
+    return (
+        <div className='header'>
+            <MdArrowBack size='25px' onClick={backButtonClick} />
+            <label>{label}</label>
+        </div>
+    )
+}
 
 export function Select({ label, tabIndex, selected, options, setter }:
     { label?: string, tabIndex?: number, selected: string, options: readonly string[], setter: (str: string) => void }) {
@@ -52,7 +61,7 @@ export function SettingsButton() {
             <MdSettings onClick={() => setShow(true)} size='25px' />
             {show &&
                 <CustomModal width='175px' onCancel={() => setShow(false)}>
-                    <h3>{t('Nav.settings')}</h3>
+                    <DefaultHeader label={t('Nav.settings')} backButtonClick={() => setShow(false)} />
                     <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                         <label>
                             {t('Nav.language')}:

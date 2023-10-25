@@ -37,17 +37,3 @@
     height: auto;
     padding: 5px 20px;
 }
-
-.registration-header {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-.registration-header svg {
-    padding: 0;
-}
-
-.registration-header label {
-    padding-left: 10px;
-    font-weight: bold;
-}
