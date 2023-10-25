@@ -10,8 +10,8 @@ import { PractitionerAddModal } from '@/modals/practitionerModals';
 import { Practitioner } from '@/constants/practitionerConstants';
 import { CustomModal } from '@/modals/misc';
 import { MdArrowBack } from 'react-icons/md';
-import { useAuthCheck } from '@/constants/misc';
 import { toast } from 'react-toastify';
+import { setCookie } from 'typescript-cookie';
 
 
 type ModalType = 'practSelect' | 'practAdd' | 'registration' | null;
@@ -20,12 +20,11 @@ type FormData = { email: string, password: string, confirmPassword: string };
 export default function Login() {
     const t = useTranslations();
     const { replace } = useRouter();
-    const [render, setRender] = useState(false);
 
     const login = useCallback((email: string, password: string) => {
         getByEmailAndPassword('practitioners', email, password).then(body => {
             if (body.data) {
-                localStorage.setItem('loggedInUser', body.data._id);
+                setCookie('loggedInUser', body.data._id, { sameSite: 'strict', path: '/' });
                 replace('main');
             } else {
                 console.log(body.error);
@@ -34,9 +33,6 @@ export default function Login() {
         }).catch(err => console.error(err));
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // ha be van jelentkezve (true) akkor irányítsuk át ('main')
-    useAuthCheck(true, setRender);
-    if (!render) return <h3>{t('Misc.loading')}</h3>;
 
     return (
         <>
@@ -140,7 +136,7 @@ function RegistrationModal({ practitioner, hide, dbAction }:
         dbAction('practitioners', { ...practitioner, login: { email, password } })
             .then(res => {
                 toast(t('Toast.registrationSuccess'), { type: 'success' });
-                localStorage.setItem('loggedInUser', res.data._id);
+                setCookie('loggedInUser', res.data._id, { sameSite: 'strict', path: '/' });
                 replace('main');
             })
             .catch(err => {

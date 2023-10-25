@@ -13,6 +13,7 @@ import { Practitioner } from '@/constants/practitionerConstants';
 import { z } from 'zod';
 import { update } from '@/services/userService';
 import { toast } from 'react-toastify';
+import { removeCookie } from 'typescript-cookie';
 
 
 export function NavBar({ routes }: { routes: { name: string, href: string }[] }) {
@@ -30,7 +31,7 @@ export function NavBar({ routes }: { routes: { name: string, href: string }[] })
         <>
             <div className={styles['header']}>
                 <MdLogout onClick={() => {
-                    localStorage.removeItem('loggedInUser');
+                    removeCookie('loggedInUser', { sameSite: 'strict', path: '/' });
                     replace('/login');
                     mutate(key => true, undefined, { revalidate: false }); // clear swr cache
                 }} size='25px' />

@@ -1,6 +1,3 @@
-import { getById } from '@/services/userService';
-import { useRouter } from 'next/navigation';
-import { useLayoutEffect } from 'react';
 import { z } from 'zod';
 
 
@@ -34,33 +31,3 @@ export const zodDob = z.string().min(1).refine((dateStr: string) => {
     const date = new Date(dateStr);
     return dateStr === '' || (new Date('1900-01-01') <= date && date < new Date());
 }, { message: 'invalidDateOfBirth' });
-
-// nem a legjobb
-export const useAuthCheck = (calledFromLogin: boolean, setData: any) => {
-    const { replace } = useRouter();
-
-    useLayoutEffect(() => {
-        const id = localStorage.getItem('loggedInUser');
-
-        if (calledFromLogin) {
-            if (id) {
-                replace('main');
-            } else {
-                setData(true);
-            }
-        } else {
-            if (id) {
-                getById('practitioners', id).then(res => {
-                    if (res.data) {
-                        setData(res.data);
-                    } else {
-                        localStorage.removeItem('loggedInUser');
-                        replace('/login');
-                    }
-                }).catch(err => console.error(err));
-            } else {
-                replace('/login');
-            }
-        }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-}
