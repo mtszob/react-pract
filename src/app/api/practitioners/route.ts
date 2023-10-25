@@ -1,19 +1,8 @@
 import Practitioners from './model'
 import { NextRequest, NextResponse } from 'next/server'
-import { addData, dbConnect, deleteData, getById, updateData } from '../db';
+import { addData, dbConnect, deleteData, getAll, getById, updateData } from '../db';
 import { checkPassword } from '@/services/passwordService';
 
-
-export const GET = async () => {
-    dbConnect();
-
-    try {
-        const practitioners: any = await Practitioners.find();
-        return NextResponse.json(practitioners, { status: 200 });
-    } catch (error) {
-        return new NextResponse('Error when fetching data from \"practitioners\" collection', { status: 500 });
-    }
-}
 
 export const POST = async (request: NextRequest) => {
     dbConnect();
@@ -25,6 +14,7 @@ export const POST = async (request: NextRequest) => {
         case 'add': return addData(Practitioners, data);
         case 'delete': return deleteData(Practitioners, data);
         case 'update': return updateData(Practitioners, data);
+        case 'getAll': return getAll(Practitioners);
         case 'getById': return getById(Practitioners, data);
         case 'getByName': return getByName(data);
         case 'getByEmailAndPassword': return getByEmailAndPassword(data);

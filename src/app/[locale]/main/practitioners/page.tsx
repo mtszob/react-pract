@@ -5,11 +5,12 @@ import { ItemList } from '@/components/items/itemList';
 import { PractitionerAddModal, PractitionerDetailsModal } from '@/modals/practitionerModals';
 import { Practitioner } from '@/constants/practitionerConstants';
 import { getDeepAttribute } from '@/services/misc';
+import { getAll } from '@/services/practitionerService';
 
 
 export default function Practitioners() {
     const t = useTranslations();
-    const { data, error, mutate }: any = useSWR('/api/practitioners', (url: string) => fetch(url).then(r => r.json()));
+    const { data, error, mutate }: any = useSWR('/api/practitioners', () => getAll().then(res => res.data));
 
     const colsObj = {
         name: t('User.name'),

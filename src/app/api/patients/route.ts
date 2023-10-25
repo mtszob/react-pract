@@ -1,18 +1,7 @@
 import Patients from './model'
 import { NextRequest, NextResponse } from 'next/server'
-import { addData, dbConnect, deleteData, updateData } from '../db';
+import { addData, dbConnect, deleteData, getAll, updateData } from '../db';
 
-
-export const GET = async () => {
-    dbConnect();
-
-    try {
-        const patients: any = await Patients.find();
-        return NextResponse.json(patients, { status: 200 });
-    } catch (error) {
-        return new NextResponse('Error when fetching data from \"patients\" collection', { status: 500 });
-    }
-}
 
 export const POST = async (request: NextRequest) => {
     dbConnect();
@@ -24,6 +13,7 @@ export const POST = async (request: NextRequest) => {
         case 'add': return addData(Patients, data);
         case 'delete': return deleteData(Patients, data);
         case 'update': return updateData(Patients, data);
+        case 'getAll': return getAll(Patients);
         case 'getByPractitioner': return getByPractitioner(data);
         default: throw Error('Unknown action: ' + action);
     }

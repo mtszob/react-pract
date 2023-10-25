@@ -63,6 +63,18 @@ export async function deleteData(model: mongoose.Model<any>, data: any) {
     }
 }
 
+export async function getAll(model: mongoose.Model<any>) {
+    const collectionName = model.collection.collectionName;
+
+    try {
+        const data = await model.find();
+
+        return NextResponse.json({ data }, { status: 200 });
+    } catch (error) {
+        return new NextResponse(`getAll: Error when fetching from "${collectionName}" collection`, { status: 500 });
+    }
+}
+
 export async function getById(model: mongoose.Model<any>, id: string) {
     const collectionName = model.collection.collectionName;
 

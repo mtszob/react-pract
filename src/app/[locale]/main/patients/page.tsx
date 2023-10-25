@@ -5,14 +5,14 @@ import { ItemList } from '@/components/items/itemList';
 import { PatientAddModal, PatientDetailsModal } from '@/modals/patientModals';
 import { Patient } from '@/constants/patientConstants';
 import { useContext } from 'react';
-import { getByPractitioner } from '@/services/patientService';
+import { getAll, getByPractitioner } from '@/services/patientService';
 import { UserContext } from '../layout';
 import { Practitioner } from '@/constants/practitionerConstants';
 import { getDeepAttribute } from '@/services/misc';
 
-const fetcher = (url: string, pract: Practitioner) => {
+const fetcher = (pract: Practitioner) => {
     if (pract.admin) {
-        return fetch(url).then(res => res.json());
+        return getAll().then(res => res.data);
     } else {
         return getByPractitioner(pract._id!).then(res => res.data);
     }
@@ -21,7 +21,7 @@ const fetcher = (url: string, pract: Practitioner) => {
 export default function Patients() {
     const t = useTranslations();
     const loggedInUser = useContext(UserContext);
-    const { data, error, mutate }: any = useSWR(loggedInUser ? '/api/patients' : null, (url: string) => fetcher(url, loggedInUser!));
+    const { data, error, mutate }: any = useSWR(loggedInUser ? '/api/patients' : null, () => fetcher(loggedInUser!));
 
     const colsObj = {
         name: t('User.name'),
