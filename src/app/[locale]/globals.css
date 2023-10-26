@@ -51,35 +51,19 @@ table {
     text-align: center;
 }
 
-table button {
-    width: 100%;
-}
-
-table th:hover {
+table th>label:hover {
     cursor: pointer;
     text-decoration: underline;
     text-decoration-thickness: 3px;
 }
 
-table tr {
-    position: relative;
-}
-
-table tr:nth-child(n+3):nth-child(2n) {
+table tr:nth-child(n+3):nth-child(2n):not(:nth-last-child(-n+2)) {
     background-color: var(--darker);
 }
 
-table tr:nth-child(n+3):hover {
-    background-color: black;
-    color: white !important;
-}
-
-ul {
-    margin: 0px;
-}
-
-li {
-    margin: 5px 0px;
+table tr:nth-child(n+3):not(:nth-last-child(-n+2)):hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
 svg {

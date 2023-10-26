@@ -9,3 +9,31 @@
 .searchbar select {
     font-size: initial;
 }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paginator {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: small;
+}
+
+.paginator button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.paginator button:disabled {
+    cursor: default;
+}
+
+.paginator svg {
+    cursor: inherit;
+}

@@ -31,7 +31,10 @@ export default function Patients() {
         'telecom.email': t('User.email')
     };
     const colorData = { colors: { null: 'var(--green)' }, colorByField: 'practitioner' };
-    const filterData = { sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] } };
+    const filterData = {
+        sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] },
+        active: { label: t('Patient.status'), options: [t('Patient.active'), t('Patient.inactive')] }
+    };
 
     if (error) return <h3>{t('Error.errorWhenLoading')}</h3>;
     if (!data) return <h3>{t('Misc.loading')}</h3>;
@@ -67,6 +70,7 @@ const filterFunction = (items: Patient[], filter: any, t: any): Patient[] => {
     }
 
     if (filter.sex !== '-') { filtered = filtered.filter(el => el.isMale === (filter.sex === t('User.male'))); }
+    if (filter.active !== '-') { filtered = filtered.filter(el => (filter.active === t('Patient.active')) ? el.practitioner : !el.practitioner); }
 
     return filtered;
 };

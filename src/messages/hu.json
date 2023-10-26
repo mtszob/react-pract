@@ -34,7 +34,10 @@
         "practNotFound": "Orvos nem található",
         "add": "Páciens felvétele",
         "update": "Páciens módosítása",
-        "save": "Páciens mentése"
+        "save": "Páciens mentése",
+        "status": "Státusz",
+        "active": "Aktív",
+        "inactive": "Inaktív"
     },
     "Practitioner": {
         "title": "Orvosok",
@@ -109,6 +112,11 @@
         "saveEmail": "E-mail mentése",
         "savePassword": "Jelszó mentése",
         "saveDetails": "Részletek mentése",
-        "or": "vagy"
+        "or": "vagy",
+        "hu": "Magyar",
+        "en": "Angol",
+        "itemsPerPage": "Oldalméret",
+        "noData": "Nincs adat",
+        "paginatorText": "össz:"
     }
 }

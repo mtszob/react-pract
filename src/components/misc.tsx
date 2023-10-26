@@ -19,7 +19,7 @@ export function Select({ label, tabIndex, selected, options, setter }:
     { label?: string, tabIndex?: number, selected: string, options: readonly string[], setter: (str: string) => void }) {
     return (
         <>
-            {label && <label style={{ display: 'flex', alignItems: 'center', fontSize: 'small' }}>{label}:</label>}
+            {label && <label style={{ fontSize: 'small' }}>{label}: </label>}
             <select tabIndex={tabIndex} value={selected} onChange={(e) => setter(e.target.value)}>
                 {options.map((option, index) => (
                     <option key={index} value={option}>
@@ -66,8 +66,11 @@ export function SettingsButton() {
                         <label>
                             {t('Nav.language')}:
                         </label>
-                        <Select selected={locale} options={['en', 'hu']} setter={(str: string) => {
-                            replace(pathName, { locale: str });
+                        <Select selected={t(`Misc.${locale}`)} options={[t('Misc.en'), t('Misc.hu')]} setter={(str: string) => {
+                            switch (str) {
+                                case t('Misc.hu'): replace(pathName, { locale: 'hu' }); break;
+                                case t('Misc.en'): replace(pathName, { locale: 'en' }); break;
+                            }
                         }} />
                     </div>
                 </CustomModal>

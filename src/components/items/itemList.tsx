@@ -1,6 +1,6 @@
 import styles from './items.module.css';
-import { FunctionComponent, useState } from 'react';
-import { MdAddCircle, MdDelete, MdEdit } from 'react-icons/md';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { MdAddCircle, MdArrowBackIos, MdArrowForwardIos, MdDelete, MdEdit } from 'react-icons/md';
 import { useImmerReducer } from 'use-immer';
 import { useTranslations } from 'next-intl';
 import { getDeepAttribute } from '@/services/misc';
@@ -104,15 +104,20 @@ function Table({ colsObj, items, colorData, filter, filterFunction, sort, setSor
     colsObj: any, items: any[], colorData: { colors: any, colorByField: any },
     filter: any, filterFunction: (data: any[], filter: any, t: any) => any[], sort: any, setSort: any, setModalData: any
 }) {
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [pageStart, setPageStart] = useState(0);
     const t = useTranslations();
     const filtered = filterFunction(items, filter, t).sort((a, b) => sortCondition(sort, a, b));
+    const currentPage = filtered.slice(pageStart, pageStart + itemsPerPage);
     const keys = Object.keys(colsObj);
+
+    useEffect(() => { setPageStart(0); }, [filter]);
 
     return (
         <table>
             <tbody>
                 {filtered.length === 0 ?
-                    <tr><td><h3>No data</h3></td></tr>
+                    <tr><td><h3>{t('Misc.noData')}</h3></td></tr>
                     :
                     <>
                         <tr>
@@ -123,13 +128,16 @@ function Table({ colsObj, items, colorData, filter, filterFunction, sort, setSor
                             <th key={keys.length + 1}></th>
                         </tr>
                         <tr><td colSpan={keys.length + 2}><hr /></td></tr>
-                        {filtered.map((item: any) => {
+                        {currentPage.map((item: any) => {
                             return <ListItem key={item._id} item={item} colData={keys} colorData={colorData}
                                 showDetails={(item: any) => setModalData({ name: 'details', item: item })}
                                 showUpdate={(item: any) => setModalData({ name: 'update', item: item })}
                                 showDelete={(item: any) => setModalData({ name: 'delete', item: item })}
                             />;
                         })}
+                        <tr><td colSpan={keys.length + 2}><hr /></td></tr>
+                        <Paginator colSpan={keys.length + 2} from={pageStart} setFrom={setPageStart} listSize={filtered.length}
+                            itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
                     </>
                 }
             </tbody>
@@ -145,8 +153,8 @@ function ListHeader({ col, label, sort, setSort }: { col: string, label: string,
 
     return (
         <th>
-            {(sort.col === col) && (sort.direction === 'asc' ? '▲' : '▼')}
             <label className={styles['item-label']} onClick={() => toggleSort(col)}>
+                {(sort.col === col) && (sort.direction === 'asc' ? '▲' : '▼')}
                 {label}
             </label>
         </th>
@@ -157,7 +165,7 @@ function ListItem({ item, colData, colorData, showDetails, showUpdate, showDelet
     item: any, colData: string[], colorData: { colors: any, colorByField: any }, showDetails: any, showUpdate: any, showDelete: any
 }) {
     return (
-        <tr style={{ color: colorData.colors[item[colorData.colorByField]] }} onClick={() => showDetails(item)}>
+        <tr style={{ color: colorData.colors[item[colorData.colorByField]] }} onDoubleClick={() => showDetails(item)}>
             {/* custom cols */}
             {colData.map((col, index) => <td key={index + 1}>{getDeepAttribute(item, col)}</td>)}
             {/* edit and delete buttons */}
@@ -172,6 +180,36 @@ function ListItem({ item, colData, colorData, showDetails, showUpdate, showDelet
                     e.stopPropagation();
                     showDelete(item);
                 }} />
+            </td>
+        </tr>
+    )
+}
+
+function Paginator({ colSpan, from, setFrom, listSize, itemsPerPage, setItemsPerPage }:
+    { colSpan: number, from: number, setFrom: any, listSize: number, itemsPerPage: number, setItemsPerPage: any }) {
+    const t = useTranslations();
+    const pageSizes = ['10', '25', '50', '100'];
+
+    return (
+        <tr>
+            <td colSpan={colSpan}>
+                <div className={styles['footer']}>
+                    <span className={styles['paginator']}>
+                        <button disabled={from === 0} onClick={() => setFrom(from - itemsPerPage)}>
+                            <MdArrowBackIos size='20px' />
+                        </button>
+                        <label>{`${from + 1} - ${Math.min(from + itemsPerPage, listSize)} ${t('Misc.paginatorText')} ${listSize}`}</label>
+                        <button disabled={from + itemsPerPage >= listSize} onClick={() => setFrom(from + itemsPerPage)}>
+                            <MdArrowForwardIos size='20px' />
+                        </button>
+                    </span>
+                    <span>
+                        <Select label={t('Misc.itemsPerPage')} selected={itemsPerPage.toString()} options={pageSizes} setter={(str: string) => {
+                            setFrom(0);
+                            setItemsPerPage(+str);
+                        }} />
+                    </span>
+                </div>
             </td>
         </tr>
     )

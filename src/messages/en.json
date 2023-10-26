@@ -34,7 +34,10 @@
         "practNotFound": "Practitioner not found",
         "add": "Add patient",
         "update": "Update patient",
-        "save": "Save patient"
+        "save": "Save patient",
+        "status": "Status",
+        "active": "Active",
+        "inactive": "Inactive"
     },
     "Practitioner": {
         "title": "Practitioners",
@@ -109,6 +112,11 @@
         "saveEmail": "Save e-mail",
         "savePassword": "Save password",
         "saveDetails": "Save details",
-        "or": "or"
+        "or": "or",
+        "hu": "Hungarian",
+        "en": "English",
+        "itemsPerPage": "Items per page",
+        "noData": "No data",
+        "paginatorText": "of"
     }
 }

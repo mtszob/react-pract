@@ -20,8 +20,8 @@ export default function Practitioners() {
     };
     const colorData = { colors: { true: 'red' }, colorByField: 'admin' };
     const filterData = {
-        role: { label: t('Practitioner.role'), options: [t('Practitioner.user'), t('Practitioner.admin')] },
-        sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] }
+        sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] },
+        role: { label: t('Practitioner.role'), options: [t('Practitioner.user'), t('Practitioner.admin')] }
     };
 
     if (error) return <h3>{t('Error.errorWhenLoading')}</h3>;
