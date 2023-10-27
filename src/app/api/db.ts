@@ -60,7 +60,7 @@ export async function deleteData(model: mongoose.Model<any>, data: any) {
     const collectionName = model.collection.collectionName;
 
     try {
-        await model.deleteOne({ name: data.name });
+        await model.findByIdAndDelete(data._id);
 
         return NextResponse.json({
             message: `"${data.name}" deleted from "${collectionName}" collection`,

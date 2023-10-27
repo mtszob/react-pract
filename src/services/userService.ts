@@ -49,6 +49,17 @@ export function update(collection: string, item: any) {
         body: JSON.stringify({ action: 'update', data: item }),
     }).then(res => {
         if (res.ok) return res.json();
-        return Promise.reject(`update: Error while update data in ${collection} collection`);
+        return Promise.reject(`update: Error while updating data in ${collection} collection`);
+    });
+}
+
+export function remove(collection: string, item: any) {
+    return fetch(`/api/${collection}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ action: 'delete', data: item }),
+    }).then(res => {
+        if (res.ok) return res.json();
+        return Promise.reject(`remove: Error while deleting data from ${collection} collection`);
     });
 }

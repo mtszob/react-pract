@@ -1,91 +1,52 @@
 import styles from './items.module.css';
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdAddCircle, MdArrowBackIos, MdArrowForwardIos, MdDelete, MdEdit } from 'react-icons/md';
-import { useImmerReducer } from 'use-immer';
 import { useTranslations } from 'next-intl';
 import { getDeepAttribute } from '@/services/misc';
-import { ConfirmAlert, Select } from '../misc';
-import { toast } from 'react-toastify';
+import { Select } from '../misc';
 
+type ColumnData = { label: string, field: string };
+type ColorConfig = { colors: { fieldValue: any, color: string }[], colorByField: any };
+type FilterData = { field: string, label: string, options: string[] }
+type SortObject = { col: string, direction: string };
+type ModalData = { name: string, item: any };
 
-export function ItemList({ collection, data, mutate, colsObj, colorData, filterData, filterFunction, DetailsModal, FormModal }: {
-    collection: string, data: any[], mutate: any,
-    colsObj: any, colorData: { colors: any, colorByField: any },
-    filterData: any, filterFunction: (data: any[], filter: any, t: any) => any[],
-    DetailsModal: FunctionComponent<{ data: any, hide: any }>, FormModal: FunctionComponent<{ data?: any, hide: any, onSave: any }>
+export function ItemList({ data, columns, colorConfig, filterConfig, filterFunction, setModalData }: {
+    data: any[], columns: ColumnData[], colorConfig: ColorConfig, filterConfig: FilterData[],
+    filterFunction: (data: any[], filter: any, t: any) => any[], setModalData: (modalData: ModalData) => void
 }) {
     const t = useTranslations();
     const sortObj = { col: 'name', direction: 'asc' };
-    const modalObj: { name: string, item: any } = { name: '', item: null };
-    const filterObj: any = {};
-    Object.keys(filterData).forEach(key => filterObj[key] = '-');
+    const filterObj = filterConfig.reduce((acc, cur) => {
+        acc[cur.field] = '-';
+        return acc;
+    }, {} as any);
 
-    const [items, dispatch] = useImmerReducer(itemReducer, data);
+    const [selectedFilters, setSelectedFilters] = useState({ search: '', ...filterObj });
 
-    const [sort, setSort] = useState(sortObj);
-    const [modalData, setModalData] = useState(modalObj);
-    const [filter, setFilter] = useState({ search: '', ...filterObj });
-    const hideModals = () => setModalData(modalObj);
+    const filteredData = filterFunction(data, selectedFilters, t);
 
     return (
         <>
-            <SearchBar filterData={filterData} filter={filter} setFilter={setFilter} setModalData={setModalData} />
-            <Table
-                colsObj={colsObj} items={items} colorData={colorData}
-                filter={filter} filterFunction={filterFunction}
-                sort={sort} setSort={setSort}
-                setModalData={setModalData}
-            />
-            {modalData.name === 'add' &&
-                <FormModal hide={hideModals} onSave={(item: any) => {
-                    triggerAdd(collection, item, mutate, dispatch).then(() => {
-                        hideModals();
-                        toast(t(`Toast.${collection}AddSuccess`), { type: 'success' });
-                    }).catch(err => {
-                        console.error(err);
-                        toast(t(`Toast.${collection}AddError`), { type: 'error' });
-                    });
-                }} />
-            }
-            {modalData.name === 'details' &&
-                <DetailsModal data={modalData.item!} hide={hideModals} />
-            }
-            {modalData.name === 'update' &&
-                <FormModal data={modalData.item} hide={hideModals} onSave={(item: any) => {
-                    triggerUpdate(collection, item, mutate, dispatch).then(() => {
-                        hideModals();
-                        toast(t(`Toast.${collection}UpdateSuccess`), { type: 'success' });
-                    }).catch(err => {
-                        console.error(err);
-                        toast(t(`Toast.${collection}UpdateError`), { type: 'error' });
-                    });
-                }} />
-            }
-            {modalData.name === 'delete' &&
-                <ConfirmAlert title={t('Misc.deleteItem')} message={t('Misc.deleteConfirm', { item: modalData!.item!.name })} onCancel={hideModals}
-                    onConfirm={() => {
-                        triggerDelete(collection, modalData.item!, mutate, dispatch).then(() => {
-                            hideModals();
-                            toast(t(`Toast.${collection}DeleteSuccess`), { type: 'success' });
-                        }).catch(err => {
-                            console.error(err);
-                            toast(t(`Toast.${collection}DeleteError`), { type: 'error' });
-                        });
-                    }} />
-            }
+            <SearchBar filterConfig={filterConfig} filter={selectedFilters} setFilter={setSelectedFilters} setModalData={setModalData} />
+            <Table items={filteredData} columns={columns} colorConfig={colorConfig} sortObj={sortObj} setModalData={setModalData} />
         </>
     )
 }
 
-function SearchBar({ filterData, filter, setFilter, setModalData }: { filterData: any, filter: any, setFilter: any, setModalData: any }) {
+function SearchBar({ filterConfig, filter, setFilter, setModalData }: {
+    filterConfig: FilterData[], filter: any, setFilter: any, setModalData: (modalData: ModalData) => void
+}) {
     const t = useTranslations('Misc');
 
     return (
         <div className={styles['searchbar']}>
             {Object.keys(filter).map((key, index) => {
+                const fc = filterConfig.find(filter => filter.field === key);
                 if (key !== 'search') {
-                    return <Select key={index} label={filterData[key].label} selected={filter[key]} options={['-', ...filterData[key].options]}
-                        setter={(str: any) => setFilter({ ...filter, [key]: str })} />
+                    return <Select key={index} label={fc!.label} selected={filter[key]}
+                        options={['-', ...fc!.options]} setter={(str: any) => setFilter({ ...filter, [key]: str })}
+                    />
                 }
             })}
             <input
@@ -100,43 +61,38 @@ function SearchBar({ filterData, filter, setFilter, setModalData }: { filterData
     )
 }
 
-function Table({ colsObj, items, colorData, filter, filterFunction, sort, setSort, setModalData }: {
-    colsObj: any, items: any[], colorData: { colors: any, colorByField: any },
-    filter: any, filterFunction: (data: any[], filter: any, t: any) => any[], sort: any, setSort: any, setModalData: any
+function Table({ items, columns, colorConfig, sortObj, setModalData }: {
+    items: any[], columns: ColumnData[], colorConfig: ColorConfig, sortObj: SortObject, setModalData: (modalData: ModalData) => void
 }) {
+    const t = useTranslations();
+    const [sort, setSort] = useState(sortObj);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [pageStart, setPageStart] = useState(0);
-    const t = useTranslations();
-    const filtered = filterFunction(items, filter, t).sort((a, b) => sortCondition(sort, a, b));
-    const currentPage = filtered.slice(pageStart, pageStart + itemsPerPage);
-    const keys = Object.keys(colsObj);
+    const currentPage = items.sort((a, b) => sortCondition(sort, a, b)).slice(pageStart, pageStart + itemsPerPage);
 
-    useEffect(() => { setPageStart(0); }, [filter]);
+    useEffect(() => { setPageStart(0); }, [items]);
 
     return (
         <table>
             <tbody>
-                {filtered.length === 0 ?
+                {items.length === 0 ?
                     <tr><td><h3>{t('Misc.noData')}</h3></td></tr>
                     :
                     <>
                         <tr>
-                            {keys.map((key, index) =>
-                                <ListHeader key={index} col={key} label={colsObj[key]} sort={sort} setSort={setSort} />
+                            {columns.map((column, index) =>
+                                <ListHeader key={index} col={column.field} label={column.label} sort={sort} setSort={setSort} />
                             )}
-                            <th key={keys.length}></th>
-                            <th key={keys.length + 1}></th>
+                            <th key={columns.length}></th>
+                            <th key={columns.length + 1}></th>
                         </tr>
-                        <tr><td colSpan={keys.length + 2}><hr /></td></tr>
+                        <tr><td colSpan={columns.length + 2}><hr /></td></tr>
                         {currentPage.map((item: any) => {
-                            return <ListItem key={item._id} item={item} colData={keys} colorData={colorData}
-                                showDetails={(item: any) => setModalData({ name: 'details', item: item })}
-                                showUpdate={(item: any) => setModalData({ name: 'update', item: item })}
-                                showDelete={(item: any) => setModalData({ name: 'delete', item: item })}
-                            />;
+                            return <ListItem key={item._id} item={item} colFields={columns.map(column => column.field)}
+                                colorConfig={colorConfig} setModalData={setModalData} />;
                         })}
-                        <tr><td colSpan={keys.length + 2}><hr /></td></tr>
-                        <Paginator colSpan={keys.length + 2} from={pageStart} setFrom={setPageStart} listSize={filtered.length}
+                        <tr><td colSpan={columns.length + 2}><hr /></td></tr>
+                        <Paginator colSpan={columns.length + 2} from={pageStart} setFrom={setPageStart} listSize={items.length}
                             itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
                     </>
                 }
@@ -145,7 +101,7 @@ function Table({ colsObj, items, colorData, filter, filterFunction, sort, setSor
     )
 }
 
-function ListHeader({ col, label, sort, setSort }: { col: string, label: string, sort: any, setSort: any }) {
+function ListHeader({ col, label, sort, setSort }: { col: string, label: string, sort: SortObject, setSort: (sort: SortObject) => void }) {
     const toggleSort = (col: string) => {
         const direction = sort.col === col ? (sort.direction === 'asc' ? 'desc' : 'asc') : 'asc';
         setSort({ col, direction });
@@ -161,32 +117,35 @@ function ListHeader({ col, label, sort, setSort }: { col: string, label: string,
     )
 }
 
-function ListItem({ item, colData, colorData, showDetails, showUpdate, showDelete }: {
-    item: any, colData: string[], colorData: { colors: any, colorByField: any }, showDetails: any, showUpdate: any, showDelete: any
+function ListItem({ item, colFields, colorConfig, setModalData }: {
+    item: any, colFields: string[], colorConfig: ColorConfig, setModalData: (modalData: ModalData) => void
 }) {
+    const color = colorConfig.colors.find(c => c.fieldValue === item[colorConfig.colorByField])?.color;
+
     return (
-        <tr style={{ color: colorData.colors[item[colorData.colorByField]] }} onDoubleClick={() => showDetails(item)}>
+        <tr style={{ color: color }} onDoubleClick={() => setModalData({ name: 'details', item: item })}>
             {/* custom cols */}
-            {colData.map((col, index) => <td key={index + 1}>{getDeepAttribute(item, col)}</td>)}
+            {colFields.map((field, index) => <td key={index + 1}>{getDeepAttribute(item, field)}</td>)}
             {/* edit and delete buttons */}
             <td>
                 <MdEdit color='lime' size='25px' onClick={(e: any) => {
                     e.stopPropagation();
-                    showUpdate(item);
+                    setModalData({ name: 'update', item: item });
                 }} />
             </td>
             <td>
                 <MdDelete color='red' size='25px' onClick={(e: any) => {
                     e.stopPropagation();
-                    showDelete(item);
+                    setModalData({ name: 'delete', item: item });
                 }} />
             </td>
         </tr>
     )
 }
 
-function Paginator({ colSpan, from, setFrom, listSize, itemsPerPage, setItemsPerPage }:
-    { colSpan: number, from: number, setFrom: any, listSize: number, itemsPerPage: number, setItemsPerPage: any }) {
+function Paginator({ colSpan, from, setFrom, listSize, itemsPerPage, setItemsPerPage }: {
+    colSpan: number, from: number, setFrom: (n: number) => void, listSize: number, itemsPerPage: number, setItemsPerPage: (n: number) => void
+}) {
     const t = useTranslations();
     const pageSizes = ['10', '25', '50', '100'];
 
@@ -215,7 +174,7 @@ function Paginator({ colSpan, from, setFrom, listSize, itemsPerPage, setItemsPer
     )
 }
 
-const sortCondition = (sort: any, a: any, b: any) => {
+const sortCondition = (sort: SortObject, a: any, b: any) => {
     let left = getDeepAttribute(a, sort.col);
     let right = getDeepAttribute(b, sort.col);
 
@@ -227,67 +186,3 @@ const sortCondition = (sort: any, a: any, b: any) => {
         return sort.direction === 'asc' ? left - right : right - left;
     }
 };
-
-async function triggerAdd(collection: string, item: any, mutate: any, dispatch: any) {
-    const res = await fetch('/api/' + collection, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify({ action: 'add', data: item }),
-    });
-
-    if (res.ok) {
-        mutate().then((items: any[]) => {
-            dispatch({ code: 'set', items });
-        });
-    } else {
-        throw new Error('Error when adding item: ' + res.statusText);
-    }
-}
-
-async function triggerDelete(collection: string, item: any, mutate: any, dispatch: any) {
-    const res = await fetch('/api/' + collection, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify({ action: 'delete', data: item }),
-    });
-
-    if (res.ok) {
-        mutate().then(() => {
-            dispatch({ code: 'delete', id: item._id });
-        });
-    } else {
-        throw new Error('Error when deleting item: ' + res.statusText);
-    }
-}
-
-async function triggerUpdate(collection: string, item: any, mutate: any, dispatch: any) {
-    const res = await fetch('/api/' + collection, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify({ action: 'update', data: item }),
-    });
-
-    if (res.ok) {
-        mutate().then((items: any) => {
-            dispatch({ code: 'set', items });
-        });
-    } else {
-        throw new Error('Error when updating item: ' + res.statusText);
-    }
-}
-
-function itemReducer(items: any, action: any) {
-    switch (action.code) {
-        case 'set': {
-            return action.items;
-        }
-        case 'delete': {
-            const index = items.findIndex((i: any) => i._id === action.id);
-            items.splice(index, 1);
-            break;
-        }
-        default: {
-            throw Error('Unknown action: ' + action.code);
-        }
-    }
-}

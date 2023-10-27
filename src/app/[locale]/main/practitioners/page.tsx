@@ -6,23 +6,32 @@ import { PractitionerFormModal, PractitionerDetailsModal } from '@/modals/practi
 import { Practitioner } from '@/constants/practitionerConstants';
 import { getDeepAttribute } from '@/services/misc';
 import { getAll } from '@/services/practitionerService';
+import { ConfirmAlert } from '@/components/misc';
+import { toast } from 'react-toastify';
+import { add, remove, update } from '@/services/userService';
+import { useState } from 'react';
 
 
 export default function Practitioners() {
     const t = useTranslations();
     const { data, error, mutate }: any = useSWR('/api/practitioners', () => getAll().then(res => res.data));
 
-    const colsObj = {
-        name: t('User.name'),
-        dob: t('User.dateOfBirth'),
-        'telecom.phone': t('User.phone'),
-        'telecom.email': t('User.email')
-    };
-    const colorData = { colors: { true: 'red' }, colorByField: 'admin' };
-    const filterData = {
-        sex: { label: t('User.sex'), options: [t('User.male'), t('User.female')] },
-        role: { label: t('Practitioner.role'), options: [t('Practitioner.user'), t('Practitioner.admin')] }
-    };
+    const columns = [
+        { label: t('User.name'), field: 'name' },
+        { label: t('User.dateOfBirth'), field: 'dob' },
+        { label: t('User.phone'), field: 'telecom.phone' },
+        { label: t('User.email'), field: 'telecom.email' },
+    ];
+
+    const colorConfig = { colors: [{ fieldValue: true, color: 'red' }], colorByField: 'admin' };
+
+    const filterConfig = [
+        { field: 'sex', label: t('User.sex'), options: [t('User.male'), t('User.female')] },
+        { field: 'role', label: t('Practitioner.role'), options: [t('Practitioner.user'), t('Practitioner.admin')] }
+    ];
+
+    const [modalData, setModalData] = useState<{ name: string, item: any }>({ name: '', item: null });
+    const hideModals = () => setModalData({ name: '', item: null });
 
     if (error) return <h3>{t('Error.errorWhenLoading')}</h3>;
     if (!data) return <h3>{t('Misc.loading')}</h3>;
@@ -31,11 +40,52 @@ export default function Practitioners() {
         <>
             <h3>{t('Practitioner.title')}</h3>
             <ItemList
-                collection='practitioners' data={data} mutate={mutate}
-                colsObj={colsObj} colorData={colorData}
-                filterData={filterData} filterFunction={filterFunction}
-                DetailsModal={PractitionerDetailsModal} FormModal={PractitionerFormModal}
+                data={data} columns={columns} colorConfig={colorConfig} filterConfig={filterConfig}
+                filterFunction={filterFunction} setModalData={setModalData}
             />
+            {modalData.name === 'details' &&
+                <PractitionerDetailsModal data={modalData.item!} hide={hideModals} />
+            }
+            {modalData.name === 'add' &&
+                <PractitionerFormModal hide={hideModals} onSave={(item: any) => {
+                    add('practitioners', item).then(() => {
+                        mutate().then(() => {
+                            hideModals();
+                            toast(t(`Toast.practitionersAddSuccess`), { type: 'success' });
+                        });
+                    }).catch(err => {
+                        console.error(err);
+                        toast(t(`Toast.practitionersAddError`), { type: 'error' });
+                    });
+                }} />
+            }
+            {modalData.name === 'update' &&
+                <PractitionerFormModal data={modalData.item} hide={hideModals} onSave={(item: any) => {
+                    update('practitioners', item).then(() => {
+                        mutate().then(() => {
+                            hideModals();
+                            toast(t(`Toast.practitionersUpdateSuccess`), { type: 'success' });
+                        });
+                    }).catch(err => {
+                        console.error(err);
+                        toast(t(`Toast.practitionersUpdateError`), { type: 'error' });
+                    });
+                }} />
+            }
+            {modalData.name === 'delete' &&
+                <ConfirmAlert title={t('Misc.deleteItem')} message={t('Misc.deleteConfirm', { item: modalData!.item!.name })} onCancel={hideModals}
+                    onConfirm={() => {
+                        remove('practitioners', modalData.item!).then(() => {
+                            mutate().then(() => {
+                                hideModals();
+                                toast(t(`Toast.practitionersDeleteSuccess`), { type: 'success' });
+                            });
+                        }).catch(err => {
+                            console.error(err);
+                            toast(t(`Toast.practitionersDeleteError`), { type: 'error' });
+                        });
+                    }} />
+            }
         </>
     )
 }
